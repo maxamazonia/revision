@@ -1010,6 +1010,16 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
   }
 }
 
+
+
+/* V68 — session-local diagnostic summary */
+.session-weak-summary{
+  margin:14px 0 12px;padding:10px;border:1px solid rgba(255,255,255,.18);
+  background:rgba(0,0,0,.28);font-size:11px;line-height:1.45;
+}
+.session-weak-summary strong{display:block;margin-bottom:5px;letter-spacing:.08em}
+.session-weak-summary div{color:#ff9aaa}
+
 </style>
 </head>
 <body>
@@ -1252,7 +1262,9 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
         <div class="end-stat">VITESSE MOYENNE<strong id="victoryAvg">—</strong></div>
         <div class="end-stat">MEILLEUR TEMPS<strong id="victoryBest">—</strong></div>
       </div>
+      <div id="victoryWeakSummary" class="session-weak-summary"></div>
       <button class="neon-btn" id="victoryReplayBtn">REJOUER</button>
+      <button class="neon-btn hot" id="victoryWeakBtn" style="margin-top:10px" hidden>RENFORCEMENT POINTS FAIBLES</button>
       <button class="neon-btn" id="victoryMenuBtn" style="margin-top:10px">MENU</button>
     </div>
   </div>
@@ -1276,7 +1288,9 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
         <div class="end-stat">VITESSE MOYENNE<strong id="lossAvg">—</strong></div>
         <div class="end-stat">MEILLEUR TEMPS<strong id="lossBest">—</strong></div>
       </div>
+      <div id="lossWeakSummary" class="session-weak-summary"></div>
       <button class="neon-btn" id="replayBtn">REJOUER</button>
+      <button class="neon-btn hot" id="lossWeakBtn" style="margin-top:10px" hidden>RENFORCEMENT POINTS FAIBLES</button>
       <button class="neon-btn" id="quitGameBtn" style="margin-top:10px">MENU</button>
     </div>
   </div>
@@ -1819,16 +1833,20 @@ function shuffledCopy(arr){
 function extremePairKey(p){
   return `${String(p.a??"")}\u241f${String(p.b??"")}`;
 }
-function startStudy(kind){
+function startStudy(kind, reinforcementPool=null){
   const direction=directionForQuestion();
   const selectedSeconds=kind==="learn"?learningSeconds:(kind==="review"?revisionSeconds:extremeSeconds);
-  study={kind,direction,n:0,goal:sessionGoal(kind),pool:activePairs(),recent:[],target:null,locked:false,qcmSeconds:selectedSeconds,qcmAccel:false,qcmCurrent:selectedSeconds,qcmTimer:null,qcmStarted:0};
+  const basePool=(reinforcementPool&&reinforcementPool.length)?reinforcementPool:activePairs();
+  const goal=kind==="extreme"?basePool.length:Math.min(sessionGoal(kind),basePool.length);
+  study={kind,direction,n:0,goal,pool:basePool,recent:[],target:null,locked:false,qcmSeconds:selectedSeconds,qcmAccel:false,qcmCurrent:selectedSeconds,qcmTimer:null,qcmStarted:0,
+    sessionWeak:new Map(), sessionOrder:shuffledCopy(basePool).slice(0,goal), sessionIndex:0,
+    reinforcement:!!(reinforcementPool&&reinforcementPool.length)};
 
   if(kind==="extreme"){
     study.extremePhase="diagnostic";
-    study.extremeOrder=shuffledCopy(activePairs());
+    study.extremeOrder=[...study.sessionOrder];
     study.extremeIndex=0;
-    study.extremeDifficulties=new Map();
+    study.extremeDifficulties=study.sessionWeak;
     study.extremeConfirmations=new Map();
     study.extremeQueue=[];
     study.extremeTotal=study.extremeOrder.length;
@@ -1866,7 +1884,8 @@ function nextStudyQuestion(){
       return;
     }
   }else{
-    p=weightedStudyPair(false);
+    p=study.sessionOrder[study.sessionIndex++] || null;
+    if(!p){finishStudy();return}
   }
 
   study.n++; study.locked=false; study.qStart=performance.now();
@@ -1957,12 +1976,12 @@ function showExtremeCheckpoint(){
     ${list}
     <div class="extreme-actions">
       <button class="neon-btn" id="extremeRestart">RECOMMENCER LE TOUR</button>
-      ${items.length?`<button class="neon-btn hot" id="extremeBeyond">AU-DELÀ DE TES LIMITES</button>`:""}
+      ${items.length?`<button class="neon-btn hot" id="extremeBeyond">RENFORCEMENT POINTS FAIBLES</button>`:""}
       <button class="small" id="extremeLeave">QUITTER</button>
     </div>`;
 
-  $("#extremeRestart").onclick=restartExtremeDiagnostic;
-  if($("#extremeBeyond"))$("#extremeBeyond").onclick=startExtremeLimits;
+  $("#extremeRestart").onclick=()=>startStudy("extreme");
+  if($("#extremeBeyond"))$("#extremeBeyond").onclick=()=>startStudy("extreme",items.map(x=>x.pair));
   $("#extremeLeave").onclick=leaveExtreme;
 }
 function restartExtremeDiagnostic(){
@@ -2040,6 +2059,7 @@ function timeoutStudyAnswer(){
   study.locked=true;
   const source=study.kind==="learn"?"qcm-timeout":study.kind==="review"?"written-timeout":"extreme-timeout";
   recordAttempt(study.target.pair,false,source,(study.qcmCurrent||study.qcmSeconds||6)*1000);
+  study.sessionWeak.set(pairKey(study.target.pair),{pair:study.target.pair,reason:"timeout"});
   if(study.kind==="extreme")markExtremeResult(false,"timeout");
   $("#studyFeedback").textContent=study.target.answer;
   $("#studyFeedback").style.color="#ff4d67";
@@ -2080,6 +2100,7 @@ function answerStudy(value){
   const ok=(study.target.validAnswers||[study.target.answer]).some(a=>normalizeAnswer(value)===normalizeAnswer(a));
   const responseMs=Math.max(0,performance.now()-(study.qStart||performance.now()));
   const r=recordAttempt(study.target.pair,ok,study.kind==="learn"?"qcm":"written",responseMs);
+  if(!ok)study.sessionWeak.set(pairKey(study.target.pair),{pair:study.target.pair,reason:"error"});
   if(study.kind==="extreme")markExtremeResult(ok,ok?"correct":"error");
   if(study.qcmSeconds>0)study.qcmCurrent=study.qcmSeconds;
   const feedback=$("#studyFeedback");
@@ -2100,11 +2121,33 @@ function answerStudy(value){
 }
 function statusLabel(s){return ({difficult:"DIFFICILE",fragile:"FRAGILE",progress:"EN PROGRÈS",mastered:"MAÎTRISÉ"})[s]||s}
 function finishStudy(){
-  const c=profileCounts();
-  $("#studyFeedback").textContent=`SESSION TERMINÉE — ${c.mastered} maîtrisé(s), ${c.difficult+c.fragile} à retravailler`;
-  $("#studyQuestion").textContent="BIEN JOUÉ";
-  $("#qcmArea").innerHTML="";$("#writtenArea").classList.add("hidden");
-  setTimeout(()=>{$("#studyScreen").classList.remove("active");study=null;updateMasteryUI()},1800);
+  stopQcmTimer();
+  if(!study)return;
+  study.locked=true;
+  const weak=[...study.sessionWeak.values()];
+  const kind=study.kind;
+  const weakPairs=weak.map(x=>x.pair);
+  $("#studyQuestion").textContent=weak.length?"POINTS FAIBLES DÉTECTÉS":"SESSION PARFAITE";
+  $("#studyProgress").textContent=`${study.goal} question(s) · ${weak.length} point(s) faible(s)`;
+  $("#qcmArea").innerHTML="";
+  $("#qcmArea").classList.add("hidden");
+  $("#writtenArea").classList.add("hidden");
+  $("#qcmTimerControls").classList.add("hidden");
+  $("#qcmTimeTrack").classList.add("hidden");
+  $("#studyFeedback").textContent="";
+  const box=$("#extremeCheckpoint");
+  box.classList.remove("hidden");
+  const list=weak.length
+    ? `<div class="extreme-diff-list">${weak.map((x,i)=>`<div><span>${i+1}</span>${escapeHtml(extremeDifficultyLabel(x))}<small>${x.reason==="timeout"?"TIMEOUT":"ERREUR"}</small></div>`).join("")}</div>`
+    : `<div class="extreme-perfect">AUCUNE FAIBLESSE DÉTECTÉE</div>`;
+  box.innerHTML=`${list}<div class="extreme-actions">
+    <button class="neon-btn" id="sessionReplay">REJOUER</button>
+    ${weak.length?`<button class="neon-btn hot" id="sessionWeak">RENFORCEMENT POINTS FAIBLES</button>`:""}
+    <button class="small" id="sessionLeave">QUITTER</button>
+  </div>`;
+  $("#sessionReplay").onclick=()=>startStudy(kind);
+  if($("#sessionWeak"))$("#sessionWeak").onclick=()=>startStudy(kind,weakPairs);
+  $("#sessionLeave").onclick=()=>{stopQcmTimer();$("#studyScreen").classList.remove("active");study=null;updateMasteryUI()};
 }
 $$("[data-study]").forEach(b=>b.onclick=()=>startStudy(b.dataset.study));
 
@@ -2180,7 +2223,7 @@ function directionText(){
   return game.direction==="ba" ? `SENS ${b} → ${a}` : `SENS ${a} → ${b}`;
 }
 
-function startGame(mode){
+function startGame(mode, reinforcementPool=null){
   currentMode=mode;
   AudioEngine.start();
   show("home"); $("#home").classList.add("hidden"); $("#game").classList.add("active");
@@ -2188,7 +2231,10 @@ function startGame(mode){
   clearProjectiles();
   buildCity(MODE[mode].city);
   const direction=directionForQuestion();
-  game={score:0,combo:1,bestCombo:1,speedCombo:0,wave:1,round:0,completed:0,goal:missionGoal(),repair:0,cityWasHit:false,cityHp:MODE[mode].city,maxCity:MODE[mode].city,target:null,projectiles:[],running:true,paused:false,lastTs:performance.now(),cp:null,roundResolved:false,roundFailing:false,spawnPending:0,spawnTimers:[],roundToken:0,panic:0,direction,questionStart:null,responseTimes:[],correctTimes:[],attempts:0,wrongShots:0,sessionStarted:Date.now(),lastScoreShown:0,failSafeTimer:null,recentPairKeys:[]};
+  const basePool=(reinforcementPool&&reinforcementPool.length)?reinforcementPool:activePairs();
+  const goal=Math.min(missionGoal(),basePool.length);
+  game={score:0,combo:1,bestCombo:1,speedCombo:0,wave:1,round:0,completed:0,asked:0,goal,repair:0,cityWasHit:false,cityHp:MODE[mode].city,maxCity:MODE[mode].city,target:null,projectiles:[],running:true,paused:false,lastTs:performance.now(),cp:null,roundResolved:false,roundFailing:false,spawnPending:0,spawnTimers:[],roundToken:0,panic:0,direction,questionStart:null,responseTimes:[],correctTimes:[],attempts:0,wrongShots:0,sessionStarted:Date.now(),lastScoreShown:0,failSafeTimer:null,recentPairKeys:[],
+    sessionWeak:new Map(),sessionOrder:shuffledCopy(basePool).slice(0,goal),sessionIndex:0,reinforcement:!!(reinforcementPool&&reinforcementPool.length)};
   updateHud(); updateFlameLevel(); nextRound(); requestAnimationFrame(loop);
 }
 
@@ -2203,8 +2249,8 @@ function updateHud(){
   $("#score").textContent=scoreText(game.score);
   $("#combo").textContent=game.combo;
   $("#comboBadge").classList.toggle("hot",game.combo>=3);
-  $("#wave")&&($("#wave").textContent=game.wave);$("#cityHp").textContent=game.cityHp;$("#missionProgress").textContent=`${game.completed}/${game.goal}`;
-  const pct=Math.max(0,Math.min(100,(game.completed/Math.max(1,game.goal))*100));
+  $("#wave")&&($("#wave").textContent=game.wave);$("#cityHp").textContent=game.cityHp;$("#missionProgress").textContent=`${game.asked||0}/${game.goal}`;
+  const pct=Math.max(0,Math.min(100,((game.asked||0)/Math.max(1,game.goal))*100));
   $("#energyFill").style.width=pct+"%";
   $("#energyPulse").style.left=pct+"%";
   $("#directionLabel").textContent=directionText();
@@ -2249,7 +2295,9 @@ function weightedPair(){
   return p;
 }
 function pickTarget(){
-  const p=weightedPair();
+  const p=game.sessionOrder[game.sessionIndex++] || null;
+  if(!p)return null;
+  game.asked=game.sessionIndex;
   const invert=game.direction==="ba";
   const promptSide=invert?"b":"a", answerSide=invert?"a":"b";
   const prompt=chooseOne(sideValues(p,promptSide),p[promptSide]);
@@ -2268,6 +2316,7 @@ function nextRound(){
   if(game){game.roundFailing=false;}
 
   if(!game || !game.running)return;
+  if(game.sessionIndex>=game.goal && game.round>0){winGame();return}
   if(game.failSafeTimer){clearTimeout(game.failSafeTimer);game.failSafeTimer=null}
   cancelSpawnTimers();
   clearProjectiles();
@@ -2277,6 +2326,7 @@ function nextRound(){
   if(selectedDirectionChoice==="mixed") game.direction=directionForQuestion();
   setRoundPalette();
   game.target=pickTarget();
+  if(!game.target){winGame();return}
   updateHud();
   game.panic=0; $("#game").classList.remove("panic");
   $("#target").textContent=game.target.prompt;
@@ -2530,6 +2580,7 @@ function hitProjectile(obj){
     const responseMs=game.questionStart?Math.max(0,performance.now()-game.questionStart):null;
     game.wrongShots++;game.attempts++;
     recordAttempt(game.target.pair,false,"wordblast-wrong",responseMs);
+    game.sessionWeak.set(pairKey(game.target.pair),{pair:game.target.pair,reason:"error"});
     AudioEngine.fx.smallBlast();game.combo=1;game.speedCombo=0;
     flameStep(-1);game.repair=0;game.panic=Math.min(3,(game.panic||0)+1);
     const mult=[1,1.35,1.60,1.85][game.panic];
@@ -2557,7 +2608,7 @@ function afterSuccessfulRound(){
   if(!game||!game.running)return;
   cancelSpawnTimers();clearProjectiles();
   game.completed++;updateHud();
-  if(game.completed>=game.goal){winGame();return}
+  if(game.sessionIndex>=game.goal){winGame();return}
   if(game.completed%5===0){game.wave++;AudioEngine.fx.wave()}
   nextRound();
 }
@@ -2706,6 +2757,7 @@ function failVolley(){
   setTimeout(()=>{
     try{
       if(game && token===game.roundToken)
+        game.sessionWeak.set(pairKey(game.target.pair),{pair:game.target.pair,reason:"error"});
         recordAttempt(game.target.pair,false,"wordblast-city",
           game.questionStart?performance.now()-game.questionStart:null);
     }catch(e){console.warn("wordblast stats error",e)}
@@ -2829,8 +2881,23 @@ $("#cpInput").addEventListener("keydown",e=>{
   },700);
 });
 
+function renderWordBlastWeaknesses(win){
+  const weak=game?[...game.sessionWeak.values()]:[];
+  const summary=$(win?"#victoryWeakSummary":"#lossWeakSummary");
+  const btn=$(win?"#victoryWeakBtn":"#lossWeakBtn");
+  if(summary){
+    summary.innerHTML=weak.length
+      ? `<strong>POINTS FAIBLES DÉTECTÉS — ${weak.length}</strong><div>${weak.map(x=>escapeHtml(extremeDifficultyLabel(x))).join(" · ")}</div>`
+      : `<strong>AUCUN POINT FAIBLE DÉTECTÉ</strong>`;
+  }
+  if(btn){
+    btn.hidden=!weak.length;
+    btn.onclick=()=>{const pool=weak.map(x=>x.pair);$("#victory").classList.remove("active");$("#gameOver").classList.remove("active");startGame(currentMode,pool)};
+  }
+}
 function fillEndStats(win){
   const avg=sessionAverage(),best=sessionBest();
+  renderWordBlastWeaknesses(win);
   if(win){
     $("#victoryScore").textContent=scoreText(game.score);
     $("#victoryCombo").textContent="x"+(game.bestCombo||1);
