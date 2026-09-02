@@ -967,6 +967,13 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
   text-shadow:0 0 8px #55ff8a,0 0 22px rgba(85,255,138,.7);
 }
 
+
+/* V63 — desktop pointer priority: hovered monster comes to the foreground.
+   Mobile/touch behavior is intentionally unchanged. */
+@media (hover:hover) and (pointer:fine){
+  .projectile:hover{z-index:60!important}
+}
+
 </style>
 </head>
 <body>
@@ -2271,25 +2278,28 @@ function spawnWave(){
   const arena=$("#arena"), W=arena.clientWidth;
   const mobile=W<=520;
   const itemW=mobile?48:90;
+  /* V62 — staggered, centered squadrons.
+     Rows are offset horizontally so lower monsters do not sit directly
+     in front of the answer plates above. Speeds/sizes/masks are untouched. */
   const desktopFormations={
-    3:[[-1,0],[0,30],[1,0]],
-    4:[[-1.5,0],[-.5,30],[.5,30],[1.5,0]],
-    5:[[0,0],[-1,30],[1,30],[-2,62],[2,62]],
-    6:[[-.5,0],[.5,0],[-1.5,30],[1.5,30],[-.5,62],[.5,62]]
+    3:[[-1.28,0],[0,0],[1.28,0]],
+    4:[[-.82,0],[.58,0],[-.58,38],[.82,38]],
+    5:[[-1.28,0],[0,0],[1.28,0],[-.82,68],[.58,68]],
+    6:[[-1.42,0],[-.02,0],[1.38,0],[-1.38,68],[.02,68],[1.42,68]]
   };
   const mobileFormations={
-    3:[[-1,0],[0,0],[1,0]],
-    4:[[-.55,0],[.55,0],[-.55,72],[.55,72]],
-    5:[[-1,0],[0,0],[1,0],[-.55,72],[.55,72]],
-    6:[[-1,0],[0,0],[1,0],[-1,72],[0,72],[1,72]]
+    3:[[-1.18,0],[0,0],[1.18,0]],
+    4:[[-.74,0],[.54,0],[-.54,80],[.74,80]],
+    5:[[-1.18,0],[0,0],[1.18,0],[-.74,80],[.54,80]],
+    6:[[-1.28,0],[0,0],[1.28,0],[-1.28,80],[0,80],[1.28,80]]
   };
   const form=mobile
     ? (mobileFormations[options.length]||options.map((_,i)=>[(i%3)-1,Math.floor(i/3)*72]))
     : (desktopFormations[options.length]||options.map((_,i)=>[i-(options.length-1)/2,(i%2)*30]));
   const maxAbs=Math.max(...form.map(v=>Math.abs(v[0])),1);
   const step=mobile
-    ? Math.min(92,Math.max(72,(W-itemW-30)/2))
-    : Math.min(itemW+22,(W*.82-itemW)/(maxAbs*2)); // V56: a little more desktop breathing room
+    ? Math.min(106,Math.max(82,(W-itemW-14)/2))
+    : Math.min(itemW+48,(W*.96-itemW)/(maxAbs*2)); // V64: use nearly the full arena width
   const cx=W/2;
   game.spawnPending=options.length;
   game.volleyReady=false;
@@ -2298,7 +2308,7 @@ function spawnWave(){
   options.forEach((o,i)=>{
     const timer=setTimeout(()=>{
       if(!game||!game.running||game.roundResolved||game.roundToken!==token)return;
-      const [dx,dy]=form[i];spawnProjectileAt(o,token,cx+dx*step-itemW/2,i,dy);
+      const [dx,dy]=form[i];spawnProjectileAt(o,token,cx+dx*step,i,dy);
       game.spawnPending=Math.max(0,game.spawnPending-1);
       if(game.spawnPending===0){
         const ready=document.createElement("div");ready.className="volley-ready";ready.textContent="SALVE !";arena.appendChild(ready);setTimeout(()=>ready.remove(),700);
@@ -2309,13 +2319,17 @@ function spawnWave(){
     game.spawnTimers.push(timer);
   });
 }
-function spawnProjectileAt(data,token,x,index,formationY=0){
+function spawnProjectileAt(data,token,centerX,index,formationY=0){
   if(!game||!game.running||game.roundResolved||token!==game.roundToken)return;
   const el=document.createElement("div"),kind=roundMonsterKind();
   el.className="projectile "+kind+" staging";data.splitter=kind==="splitter";
   dressMonster(el,data.text,kind);$("#arena").appendChild(el);
   const y=6+formationY;
-  el.style.left=Math.max(8,Math.min($("#arena").clientWidth-el.offsetWidth-8,x))+"px";el.style.top=y+"px";
+  /* Center each monster using its REAL rendered width. This removes the
+     slight right shift caused by assuming every species had the same width. */
+  const actualW=el.offsetWidth||90;
+  const x=centerX-actualW/2;
+  el.style.left=Math.max(8,Math.min($("#arena").clientWidth-actualW-8,x))+"px";el.style.top=y+"px";
   const typeSpeed=kind==="fast"?1.34:(kind==="nemesis"?.90:(kind==="armored"?.92:1));
   const obj={el,y,x:parseFloat(el.style.left),correct:data.correct,pair:data.pair,splitter:data.splitter,text:data.text,kind,
     speed:MODE[currentMode].speed*wbDifficultyFactor()*wordBlastDeviceSpeedFactor()*typeSpeed*(.96+Math.random()*.08),startFallAt:Infinity};
