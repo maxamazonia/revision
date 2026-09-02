@@ -637,6 +637,336 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
   to{transform:scale(1.03);opacity:1}
 }
 
+
+.direction-choice-panel{margin:0 0 20px;padding:14px 16px;border:1px solid rgba(57,243,255,.38);background:rgba(0,8,20,.68)}
+.direction-choice-row{display:flex;gap:10px;flex-wrap:wrap;margin:9px 0 7px}
+.direction-choice{border:1px solid #39f3ff;background:#050b18;color:#dffcff;padding:10px 15px;font:inherit;font-weight:900;cursor:pointer}
+.direction-choice:hover,.direction-choice.active{background:#39f3ff;color:#020611;box-shadow:0 0 14px rgba(57,243,255,.55)}
+
+/* V38 — compact phone squadrons: keep the whole volley high and readable */
+@media(max-width:520px){
+  .projectile{width:48px!important;height:52px!important;min-height:52px!important}
+  .projectile.fast{width:46px!important;height:50px!important;min-height:50px!important}
+  .projectile.nemesis{width:62px!important;height:64px!important;min-height:64px!important}
+  .projectile.mini{width:34px!important;height:36px!important;min-height:36px!important}
+  .projectile .monster-art{
+    inset:-8px -10px -10px -10px!important;
+    width:calc(100% + 20px)!important;height:calc(100% + 18px)!important
+  }
+  .projectile .answer{
+    bottom:3px!important;
+    font-size:9.5px!important;line-height:1!important;
+    min-width:38px!important;max-width:88px!important;
+    padding:3px 4px!important;border-width:1px!important
+  }
+  .projectile.nemesis .answer{bottom:4px!important;font-size:10px!important;max-width:94px!important}
+  .projectile.mini .answer{font-size:8px!important;min-width:26px!important;max-width:58px!important;padding:2px 3px!important}
+}
+
+
+/* V40 — smaller baked-label mask on phone so the monster remains visible */
+@media(max-width:520px){
+  .projectile::after{
+    width:42px!important;
+    height:17px!important;
+    bottom:2px!important;
+    border-radius:4px!important;
+  }
+  .projectile.fast::after{width:38px!important;height:16px!important;bottom:2px!important}
+  .projectile.splitter::after{width:42px!important;height:17px!important;bottom:2px!important}
+  .projectile.nemesis::after{width:54px!important;height:19px!important;bottom:3px!important}
+  .projectile.mini::after{width:28px!important;height:13px!important;bottom:0!important}
+}
+
+
+/* V43 — dynamic answer is mechanically locked to the black mask */
+.projectile::after,
+.projectile .answer{
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  transform:translateX(-50%)!important;
+}
+
+/* Same vertical coordinate for mask + label */
+.projectile::after,
+.projectile .answer{bottom:4px!important}
+
+.projectile.fast::after,
+.projectile.fast .answer{bottom:5px!important}
+
+.projectile.splitter::after,
+.projectile.splitter .answer{bottom:4px!important}
+
+.projectile.nemesis::after,
+.projectile.nemesis .answer{bottom:7px!important}
+
+.projectile.mini::after,
+.projectile.mini .answer{bottom:0!important}
+
+@media(max-width:520px){
+  .projectile::after,
+  .projectile .answer{bottom:2px!important}
+
+  .projectile.fast::after,
+  .projectile.fast .answer{bottom:2px!important}
+
+  .projectile.splitter::after,
+  .projectile.splitter .answer{bottom:2px!important}
+
+  .projectile.nemesis::after,
+  .projectile.nemesis .answer{bottom:3px!important}
+
+  .projectile.mini::after,
+  .projectile.mini .answer{bottom:0!important}
+}
+
+
+/* V44 — green/armored only: label locked to its black mask */
+.projectile.armored .answer{
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:4px!important;
+  transform:translateX(-50%)!important;
+  margin:0!important;
+}
+@media(max-width:520px){
+  .projectile.armored .answer{
+    bottom:2px!important;
+  }
+}
+
+
+/* V45 — multiple explicit answers + clean Word Blast phone controls */
+.multi-answer-hint{
+  margin:8px 0 2px;text-align:center;font-size:10px;color:#8299ab;letter-spacing:.04em
+}
+@media(max-width:520px){
+  /* Keep the two control groups in their own rows: no overlap. */
+  .game-actions{
+    left:8px!important;right:8px!important;bottom:52px!important;
+    width:auto!important;display:flex!important;justify-content:center!important;
+    gap:6px!important;flex-wrap:nowrap!important;
+  }
+  .audio-controls{
+    left:8px!important;right:8px!important;bottom:8px!important;
+    width:auto!important;max-width:none!important;transform:none!important;
+    display:flex!important;justify-content:center!important;gap:5px!important;
+    flex-wrap:nowrap!important;
+  }
+  .game-actions button,
+  .audio-controls button,
+  .audio-controls select{
+    min-width:0!important;font-size:8.5px!important;padding:6px 5px!important;
+    white-space:nowrap!important;
+  }
+  .audio-controls select{max-width:118px!important}
+}
+
+
+/* V47 — CITY REPAIR remains active, but its progress is intentionally hidden.
+   The repair event/animation itself may still appear when a building is rebuilt. */
+#repairMeter,
+#repairProgress,
+.repair-meter,
+.repair-progress,
+.repair-hud{
+  display:none!important;
+}
+
+
+/* V48 — unmistakable rebuild animation; progress counter remains hidden */
+#city .building.repair{
+  animation:cityRebuildV48 .85s cubic-bezier(.18,.9,.22,1)!important;
+  z-index:3;
+}
+@keyframes cityRebuildV48{
+  0%{opacity:.2;transform:translateY(24px) scaleY(.08);filter:brightness(3)}
+  45%{opacity:1;transform:translateY(-4px) scaleY(1.08);filter:brightness(2.2)}
+  100%{opacity:1;transform:none;filter:none}
+}
+
+
+/* V50 — Learning timing is selected before play */
+.learn-difficulty{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+  margin:10px 0;
+}
+.learn-diff-btn{
+  min-width:0;padding:8px 5px;border:1px solid #31536d;border-radius:7px;
+  background:#050912;color:#bfe8ff;font:inherit;font-size:9px;line-height:1.25;cursor:pointer
+}
+.learn-diff-btn.active{
+  color:#fff;border-color:#39f3ff;box-shadow:0 0 9px #39f3ff55
+}
+.qcm-timer-display{
+  justify-content:flex-end!important;
+  flex-wrap:nowrap!important;
+  margin:0 0 8px!important;
+}
+.qcm-timer-display #qcmCountdown{margin-left:4px!important}
+
+/* V50 — phone written Revision: actual controls stay inside viewport */
+@media(max-width:520px){
+  .study-screen{
+    padding:8px!important;
+    overflow-y:auto!important;
+    align-items:flex-start!important;
+  }
+  .study-panel{
+    width:100%!important;
+    max-width:100%!important;
+    margin:6px 0!important;
+    padding:12px!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+  }
+  .study-question{
+    padding:14px 2px 16px!important;
+    font-size:clamp(23px,9vw,36px)!important;
+    overflow-wrap:anywhere!important;
+  }
+  .written-wrap{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:8px!important;
+    width:100%!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+  }
+  .written-wrap.hidden{display:none!important}
+  #studyInput{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:12px 10px!important;
+    font-size:16px!important;
+  }
+  #studyValidate{
+    position:static!important;
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    transform:none!important;
+    padding:11px 8px!important;
+  }
+  .mastery-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .learn-difficulty{grid-template-columns:1fr!important}
+  .learn-diff-btn{padding:7px 5px!important}
+}
+
+
+/* V51 — same timing choices for Learning, Revision and Extreme */
+.study-difficulty{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:10px 0}
+.study-diff-btn{min-width:0;padding:8px 4px;border:1px solid #31536d;border-radius:7px;background:#050912;color:#bfe8ff;font:inherit;font-size:8px;line-height:1.25;cursor:pointer;white-space:normal}
+.study-diff-btn.active{color:#fff;border-color:#39f3ff;box-shadow:0 0 9px #39f3ff55}
+@media(max-width:520px){
+ .study-difficulty{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .study-diff-btn{font-size:8.5px;padding:7px 3px}
+}
+
+
+/* V53 — Extreme diagnostic checkpoint */
+.extreme-checkpoint{margin:12px 0 4px}
+.extreme-summary{font-size:11px;letter-spacing:.08em;margin-bottom:10px;text-align:center}
+.extreme-diff-list{max-height:260px;overflow:auto;border:1px solid #23394c;border-radius:8px;padding:6px;background:#03070d}
+.extreme-diff-list>div{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px 6px;border-bottom:1px solid #142330;font-size:10px}
+.extreme-diff-list>div:last-child{border-bottom:0}
+.extreme-diff-list span{color:#ff607d;text-align:center}
+.extreme-diff-list small{font-size:7px;color:#ff8b9d}
+.extreme-perfect{text-align:center;color:#72ff9d;padding:18px 8px;letter-spacing:.12em}
+.extreme-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+@media(max-width:520px){
+ .extreme-diff-list{max-height:220px}
+ .extreme-actions{display:grid;grid-template-columns:1fr;width:100%}
+ .extreme-actions button{width:100%;max-width:100%;box-sizing:border-box}
+ .extreme-diff-list>div{grid-template-columns:20px minmax(0,1fr);font-size:9px}
+ .extreme-diff-list small{grid-column:2}
+}
+
+
+/* V56 — WORD BLAST: no luminous outer monster frame.
+   The black answer plate/mask is intentionally preserved. */
+.projectile,
+.projectile.standard,
+.projectile.fast,
+.projectile.splitter,
+.projectile.nemesis,
+.projectile.mini{
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.projectile:hover,
+.projectile:focus,
+.projectile:active{
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.projectile .monster-art{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+/* Keep the sprite itself readable, without drawing a rectangular card. */
+.projectile .monster-art{
+  filter:drop-shadow(0 0 7px rgba(80,220,255,.28))!important;
+}
+
+
+/* V59 — definitive frame removal.
+   Earlier rules used a very specific :not(...) selector with !important,
+   which was still winning for the blue/green monsters. Match/beat that specificity. */
+.projectile.standard,
+.projectile.armored,
+.projectile:not(.fast):not(.splitter):not(.nemesis),
+.projectile.standard:hover,
+.projectile.armored:hover,
+.projectile:not(.fast):not(.splitter):not(.nemesis):hover,
+.projectile.standard:focus,
+.projectile.armored:focus,
+.projectile:not(.fast):not(.splitter):not(.nemesis):focus,
+.projectile.standard:active,
+.projectile.armored:active,
+.projectile:not(.fast):not(.splitter):not(.nemesis):active{
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* Remove any rectangular glow from the image element itself.
+   Keep size, crop and validated answer-mask coordinates exactly as in V56. */
+.projectile.standard .monster-art,
+.projectile.armored .monster-art,
+.projectile:not(.fast):not(.splitter):not(.nemesis) .monster-art{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+
+
+.victory-perfect{
+  margin:8px 0 4px;
+  color:#55ff8a;
+  font-size:clamp(24px,4vw,38px);
+  font-weight:900;
+  letter-spacing:.12em;
+  text-shadow:0 0 8px #55ff8a,0 0 22px rgba(85,255,138,.7);
+}
+
 </style>
 </head>
 <body>
@@ -664,6 +994,7 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
     </div>
     <div class="editor-head"><div>COLONNE A</div><div>COLONNE B</div><div></div></div>
     <div id="rows"></div>
+      <div class="multi-answer-hint">Plusieurs réponses possibles dans A ou B ? Sépare-les avec <strong>;</strong></div>
     <div class="toolbar">
       <button class="small" id="addRowBtn">+ AJOUTER UNE LIGNE</button>
       <button class="small" id="saveListBtn">ENREGISTRER</button>
@@ -703,12 +1034,27 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
   <div class="panel">
     <h2 id="chosenListTitle">MA LISTE</h2>
     <div class="sub" style="margin-bottom:18px">COMMENT VEUX-TU RÉVISER ?</div>
+    <div class="direction-choice-panel">
+      <div class="eyebrow">SENS DES QUESTIONS</div>
+      <div class="direction-choice-row">
+        <button type="button" class="direction-choice active" data-direction-choice="ab">A → B</button>
+        <button type="button" class="direction-choice" data-direction-choice="ba">B → A</button>
+        <button type="button" class="direction-choice" data-direction-choice="mixed">MIXTE</button>
+      </div>
+      <div class="tiny" id="directionChoiceNote"></div>
+    </div>
     <div class="modes">
       <div class="mode-card">
         <div class="mode-num">01</div>
         <h3>APPRENTISSAGE</h3>
         <div class="mode-kind">QCM</div>
         <p>La question apparaît avec plusieurs réponses. Les éléments fragiles reviennent davantage.</p>
+        <div class="study-difficulty" data-timer-mode="learn">
+<button type="button" class="study-diff-btn" data-studyseconds="0">NO STRESS</button>
+<button type="button" class="study-diff-btn" data-studyseconds="10">FACILE · 10s</button>
+<button type="button" class="study-diff-btn active" data-studyseconds="6">MOYEN · 6s</button>
+<button type="button" class="study-diff-btn" data-studyseconds="4">DIFFICILE · 4s</button>
+</div>
         <button class="neon-btn" data-study="learn">COMMENCER</button>
       </div>
       <div class="mode-card">
@@ -716,7 +1062,13 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
         <h3>RÉVISION</h3>
         <div class="mode-kind">RÉPONSE ÉCRITE</div>
         <p>Plus de propositions : écris directement la réponse. Le sens reste fixe pendant la session.</p>
-        <button class="neon-btn" data-study="review">COMMENCER</button>
+        <div class="study-difficulty" data-timer-mode="review">
+<button type="button" class="study-diff-btn" data-studyseconds="0">NO STRESS</button>
+<button type="button" class="study-diff-btn" data-studyseconds="10">FACILE · 10s</button>
+<button type="button" class="study-diff-btn active" data-studyseconds="6">MOYEN · 6s</button>
+<button type="button" class="study-diff-btn" data-studyseconds="4">DIFFICILE · 4s</button>
+</div>
+<button class="neon-btn" data-study="review">COMMENCER</button>
       </div>
       <div class="mode-card game-card">
         <div class="mode-num">03</div>
@@ -735,7 +1087,13 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
         <h3>EXTRÊME</h3>
         <div class="mode-kind">MAÎTRISE</div>
         <p>Réponses écrites ciblées sur tes faiblesses. La session continue jusqu’à confirmation de maîtrise.</p>
-        <button class="neon-btn" data-study="extreme">AFFRONTER</button>
+        <div class="study-difficulty" data-timer-mode="extreme">
+<button type="button" class="study-diff-btn" data-studyseconds="0">NO STRESS</button>
+<button type="button" class="study-diff-btn" data-studyseconds="10">FACILE · 10s</button>
+<button type="button" class="study-diff-btn active" data-studyseconds="6">MOYEN · 6s</button>
+<button type="button" class="study-diff-btn" data-studyseconds="4">DIFFICILE · 4s</button>
+</div>
+<button class="neon-btn" data-study="extreme">AFFRONTER</button>
       </div>
     </div>
     <div id="listProfileSummary" class="profile-note"></div>
@@ -753,13 +1111,9 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
       <button class="small" id="studyQuit">QUITTER</button>
     </div>
     <div id="studyProgress" class="study-meta">QUESTION 1</div>
-    <div id="qcmTimerControls" class="qcm-timerbar hidden">
-  <span class="tiny">COMPTE À REBOURS</span>
-  <button type="button" class="timer-choice" data-qcm-seconds="12">12 s</button>
-  <button type="button" class="timer-choice active" data-qcm-seconds="8">8 s</button>
-  <button type="button" class="timer-choice" data-qcm-seconds="5">5 s</button>
-  <button type="button" id="qcmAccel" class="accel-choice">ACCÉLÉRATION : OFF</button>
-  <span id="qcmCountdown">8.0</span>
+    <div id="qcmTimerControls" class="qcm-timerbar qcm-timer-display hidden">
+  <span class="tiny">TEMPS</span>
+  <span id="qcmCountdown">6.0</span>
 </div>
 <div id="qcmTimeTrack" class="qcm-time-track hidden"><div id="qcmTimeFill"></div></div>
 <div id="studyQuestion" class="study-question"></div>
@@ -769,6 +1123,7 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
       <button class="neon-btn" id="studyValidate">VALIDER</button>
     </div>
     <div id="studyFeedback" class="study-feedback"></div>
+    <div id="extremeCheckpoint" class="extreme-checkpoint hidden"></div>
     <div class="mastery-strip">
       <div class="mastery-chip">DIFFICILE<strong id="mDifficult">0</strong></div>
       <div class="mastery-chip">FRAGILE<strong id="mFragile">0</strong></div>
@@ -847,6 +1202,7 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
     <div class="victoryBox">
       <h2>VILLE SAUVÉE !</h2>
       <div id="victoryReward" class="reward-line">BRAVO !</div>
+      <div id="victoryPerfect" class="victory-perfect" hidden>PERFECT!</div>
       <div class="end-stats">
         <div class="end-stat">SCORE<strong id="victoryScore">0</strong></div>
         <div class="end-stat">MEILLEUR COMBO<strong id="victoryCombo">x1</strong></div>
@@ -1158,6 +1514,31 @@ allB.onclick=()=>{
 
 
 
+
+let selectedDirectionChoice="ab";
+function directionForQuestion(){
+  return selectedDirectionChoice==="mixed"?(Math.random()<.5?"ab":"ba"):selectedDirectionChoice;
+}
+function renderDirectionChoice(){
+  if(!currentList)return;
+  const a=currentList.colA||"A",b=currentList.colB||"B";
+  const labels={ab:`${a} → ${b}`,ba:`${b} → ${a}`,mixed:"MIXTE"};
+  document.querySelectorAll("[data-direction-choice]").forEach(btn=>{
+    const k=btn.dataset.directionChoice;
+    btn.textContent=labels[k];
+    btn.classList.toggle("active",k===selectedDirectionChoice);
+  });
+  const note=$("#directionChoiceNote");
+  if(note)note.textContent=selectedDirectionChoice==="mixed"
+    ?"Le sens change entre les questions. Les réponses proposées restent toujours dans la colonne attendue."
+    :"Le sens choisi s'applique aux quatre modes.";
+}
+document.addEventListener("click",e=>{
+  const btn=e.target.closest?.("[data-direction-choice]");
+  if(!btn)return;
+  selectedDirectionChoice=btn.dataset.directionChoice;
+  renderDirectionChoice();
+});
 let selectedPortion={parts:1,part:0,indices:[],start:0,end:0};
 const modeQuestionGoals={learn:null,written:null,review:null,extreme:null};
 function balancedRanges(n,k){let a=[],s=0;for(let i=0;i<k;i++){let e=Math.round((i+1)*n/k);a.push([s,e]);s=e}return a}
@@ -1225,6 +1606,7 @@ function returnToModeChoice(){
   show("modeScreen");
 }
 function renderModeContext(){
+ renderDirectionChoice();
  const n=activePairs().length;
  const desc=selectedPortion.parts===1?`${currentList.name} · TOUTE LA FICHE · ${n} entrées`:`${currentList.name} · ${selectedPortion.part+1}/${selectedPortion.parts} · entrées ${selectedPortion.start+1}–${selectedPortion.end}`;
  let note=$("#modeSelectionNote");if(!note){note=document.createElement("div");note.id="modeSelectionNote";note.className="mode-selection-note";$("#chosenListTitle").insertAdjacentElement("afterend",note)}note.textContent=desc;
@@ -1316,51 +1698,287 @@ function weightedStudyPair(extreme=false){
   return p;
 }
 let study=null;
-function studyTarget(pair){
-  const inv=study.direction==="ba";
-  return {pair,prompt:inv?pair.b:pair.a,answer:inv?pair.a:pair.b,side:inv?"a":"b"};
+let learningSeconds=6;
+let revisionSeconds=6;
+let extremeSeconds=6;
+function splitAlternatives(s){
+  return String(s??"").split(";").map(x=>x.trim()).filter(Boolean);
 }
 function normalizeAnswer(s){
-  return String(s??"").trim().replace(/\s+/g," ").toLocaleLowerCase();
+  let v=String(s??"")
+    .trim()
+    .toLocaleLowerCase()
+    .replace(/[×✕✖＊*]/g,"x")
+    .replace(/\s*x\s*/g,"x")
+    .replace(/\s+/g," ");
+
+  /* Multiplications are commutative:
+     9x3, 3x9, 9 × 3, 3*9 => same normalized answer.
+     We only apply this to a simple two-factor multiplication so normal text
+     and other expressions are left untouched. */
+  const m=v.match(/^([+-]?\d+(?:[.,]\d+)?)x([+-]?\d+(?:[.,]\d+)?)$/);
+  if(m){
+    const a=m[1].replace(",",".");
+    const b=m[2].replace(",",".");
+    const na=Number(a), nb=Number(b);
+    if(Number.isFinite(na) && Number.isFinite(nb)){
+      const parts=[
+        {n:na,s:String(na)},
+        {n:nb,s:String(nb)}
+      ].sort((p,q)=>p.n-q.n || p.s.localeCompare(q.s));
+      return parts[0].s+"x"+parts[1].s;
+    }
+  }
+  return v;
+}
+function uniqueNormalized(values){
+  const seen=new Set(), out=[];
+  values.forEach(v=>{
+    const n=normalizeAnswer(v);
+    if(n && !seen.has(n)){seen.add(n);out.push(v)}
+  });
+  return out;
+}
+function sideValues(pair,side){ return splitAlternatives(pair?.[side]??""); }
+function oppositeSide(side){ return side==="a"?"b":"a"; }
+
+/* All answers explicitly licensed by the sheet for this displayed prompt.
+   This includes ; alternatives and other rows that contain the same prompt. */
+function validAnswersForPrompt(prompt,promptSide,pairs=activePairs()){
+  const answerSide=oppositeSide(promptSide), key=normalizeAnswer(prompt), vals=[];
+  pairs.forEach(p=>{
+    const prompts=sideValues(p,promptSide);
+    if(prompts.some(v=>normalizeAnswer(v)===key)) vals.push(...sideValues(p,answerSide));
+  });
+  return uniqueNormalized(vals);
+}
+function allSideAlternatives(side,pairs=activePairs()){
+  return uniqueNormalized(pairs.flatMap(p=>sideValues(p,side)));
+}
+function chooseOne(arr,fallback=""){
+  return arr.length?arr[Math.floor(Math.random()*arr.length)]:fallback;
+}
+function studyTarget(pair){
+  const inv=study.direction==="ba", promptSide=inv?"b":"a", side=inv?"a":"b";
+  const prompt=chooseOne(sideValues(pair,promptSide),pair[promptSide]);
+  const validAnswers=validAnswersForPrompt(prompt,promptSide,activePairs());
+  const answer=chooseOne(validAnswers,chooseOne(sideValues(pair,side),pair[side]));
+  return {pair,prompt,answer,validAnswers,side,promptSide};
+}
+function shuffledCopy(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function extremePairKey(p){
+  return `${String(p.a??"")}\u241f${String(p.b??"")}`;
 }
 function startStudy(kind){
-  const direction=Math.random()<.5?"ab":"ba";
-  study={kind,direction,n:0,goal:sessionGoal(kind),pool:activePairs(),recent:[],target:null,locked:false,qcmSeconds:8,qcmAccel:false,qcmCurrent:8,qcmTimer:null,qcmStarted:0};
-  $("#studyTitle").textContent=kind==="learn"?"APPRENTISSAGE — QCM":kind==="review"?"RÉVISION — RÉPONSE ÉCRITE":"EXTRÊME — MAÎTRISE";
-  $("#studyDirection").textContent=direction==="ab"?`${currentList.colA||"A"} → ${currentList.colB||"B"}`:`${currentList.colB||"B"} → ${currentList.colA||"A"}`;
+  const direction=directionForQuestion();
+  const selectedSeconds=kind==="learn"?learningSeconds:(kind==="review"?revisionSeconds:extremeSeconds);
+  study={kind,direction,n:0,goal:sessionGoal(kind),pool:activePairs(),recent:[],target:null,locked:false,qcmSeconds:selectedSeconds,qcmAccel:false,qcmCurrent:selectedSeconds,qcmTimer:null,qcmStarted:0};
+
+  if(kind==="extreme"){
+    study.extremePhase="diagnostic";
+    study.extremeOrder=shuffledCopy(activePairs());
+    study.extremeIndex=0;
+    study.extremeDifficulties=new Map();
+    study.extremeConfirmations=new Map();
+    study.extremeQueue=[];
+    study.extremeTotal=study.extremeOrder.length;
+  }
+
+  $("#studyTitle").textContent=kind==="learn"?"APPRENTISSAGE — QCM":kind==="review"?"RÉVISION — RÉPONSE ÉCRITE":"EXTRÊME — DIAGNOSTIC";
+  $("#studyDirection").textContent=selectedDirectionChoice==="mixed"?"MIXTE":direction==="ab"?`${currentList.colA||"A"} → ${currentList.colB||"B"}`:`${currentList.colB||"B"} → ${currentList.colA||"A"}`;
   $("#studyScreen").classList.add("active");
+  $("#extremeCheckpoint").classList.add("hidden");
+  $("#extremeCheckpoint").innerHTML="";
   updateMasteryUI(); refreshQcmTimerButtons(); nextStudyQuestion();
+}
+function extremeNextPair(){
+  if(study.extremePhase==="diagnostic"){
+    if(study.extremeIndex>=study.extremeOrder.length)return null;
+    return study.extremeOrder[study.extremeIndex++];
+  }
+  if(study.extremePhase==="limits"){
+    if(!study.extremeQueue.length)return null;
+    return study.extremeQueue.shift();
+  }
+  return null;
 }
 function nextStudyQuestion(){
   if(!study)return;
+
   if(study.kind!=="extreme" && study.n>=study.goal){finishStudy();return}
-  if(study.kind==="extreme" && study.n>=study.goal){finishStudy();return}
+
+  let p;
+  if(study.kind==="extreme"){
+    p=extremeNextPair();
+    if(!p){
+      if(study.extremePhase==="diagnostic"){showExtremeCheckpoint();return}
+      if(study.extremePhase==="limits"){finishExtremeMastery();return}
+      return;
+    }
+  }else{
+    p=weightedStudyPair(false);
+  }
+
   study.n++; study.locked=false; study.qStart=performance.now();
-  const p=weightedStudyPair(study.kind==="extreme");
+  if(selectedDirectionChoice==="mixed") study.direction=directionForQuestion();
   study.target=studyTarget(p);
   $("#studyQuestion").textContent=study.target.prompt;
-  $("#studyProgress").textContent=study.kind==="extreme"?`TOUR ${study.n} · objectif : éliminer les faiblesses`:`QUESTION ${study.n}/${study.goal}`;
+  if(study.kind==="extreme"){
+    if(study.extremePhase==="diagnostic"){
+      $("#studyProgress").textContent=`DIAGNOSTIC ${study.extremeIndex}/${study.extremeTotal}`;
+    }else{
+      const remaining=[...study.extremeConfirmations.values()].filter(v=>v<2).length;
+      const key=extremePairKey(p), conf=study.extremeConfirmations.get(key)||0;
+      $("#studyProgress").textContent=`AU-DELÀ DE TES LIMITES · ${remaining} difficulté(s) · confirmation ${conf}/2`;
+    }
+  }else{
+    $("#studyProgress").textContent=`QUESTION ${study.n}/${study.goal}`;
+  }
+
   $("#studyFeedback").textContent="";
   $("#studyFeedback").classList.remove("answer-reveal");
+  $("#extremeCheckpoint").classList.add("hidden");
+
   const isQcm=study.kind==="learn";
+  const timed=study.qcmSeconds>0;
   $("#qcmArea").classList.toggle("hidden",!isQcm);
   $("#writtenArea").classList.toggle("hidden",isQcm);
-  $("#qcmTimerControls").classList.toggle("hidden",!isQcm);
-  $("#qcmTimeTrack").classList.toggle("hidden",!isQcm);
+  $("#qcmTimerControls").classList.toggle("hidden",!timed);
+  $("#qcmTimeTrack").classList.toggle("hidden",!timed);
   stopQcmTimer();
-  if(isQcm){ renderQcm(); startQcmTimer(); }
-  else {$("#studyInput").value=""; setTimeout(()=>$("#studyInput").focus(),30)}
-}
 
+  if(isQcm) renderQcm();
+  else{
+    $("#studyInput").value="";
+    setTimeout(()=>$("#studyInput").focus(),30);
+  }
+  if(timed) startQcmTimer();
+}
+function markExtremeResult(ok,reason="error"){
+  if(!study || study.kind!=="extreme" || !study.target)return;
+  const p=study.target.pair, key=extremePairKey(p);
+
+  if(study.extremePhase==="diagnostic"){
+    if(!ok && !study.extremeDifficulties.has(key)){
+      study.extremeDifficulties.set(key,{pair:p,reason});
+    }
+    return;
+  }
+
+  if(study.extremePhase==="limits"){
+    let conf=study.extremeConfirmations.get(key)||0;
+    conf=ok?Math.min(2,conf+1):0;
+    study.extremeConfirmations.set(key,conf);
+
+    if(conf<2){
+      /* Put it back later. With several weaknesses this naturally spaces repetitions. */
+      study.extremeQueue.push(p);
+    }
+  }
+}
+function extremeDifficultyLabel(item){
+  const p=item.pair;
+  const a=sideValues(p,"a").join(" ; ")||p.a;
+  const b=sideValues(p,"b").join(" ; ")||p.b;
+  return `${a} ↔ ${b}`;
+}
+function showExtremeCheckpoint(){
+  stopQcmTimer();
+  study.locked=true;
+  study.extremePhase="checkpoint";
+  $("#studyTitle").textContent="EXTRÊME — TOUR TERMINÉ";
+  $("#studyProgress").textContent=`${study.extremeTotal} notion(s) affrontée(s)`;
+  $("#studyQuestion").textContent=study.extremeDifficulties.size?"DIFFICULTÉS DÉTECTÉES":"PARCOURS PARFAIT";
+  $("#writtenArea").classList.add("hidden");
+  $("#qcmArea").classList.add("hidden");
+  $("#qcmTimerControls").classList.add("hidden");
+  $("#qcmTimeTrack").classList.add("hidden");
+  $("#studyFeedback").textContent="";
+
+  const box=$("#extremeCheckpoint");
+  box.classList.remove("hidden");
+  const items=[...study.extremeDifficulties.values()];
+  const list=items.length
+    ? `<div class="extreme-diff-list">${items.map((x,i)=>`<div><span>${i+1}</span>${escapeHtml(extremeDifficultyLabel(x))}<small>${x.reason==="timeout"?"TIMEOUT":"ERREUR"}</small></div>`).join("")}</div>`
+    : `<div class="extreme-perfect">AUCUNE FAIBLESSE DÉTECTÉE</div>`;
+
+  box.innerHTML=`
+    <div class="extreme-summary">${study.extremeTotal-items.length} réussie(s) · <strong>${items.length} difficulté(s)</strong></div>
+    ${list}
+    <div class="extreme-actions">
+      <button class="neon-btn" id="extremeRestart">RECOMMENCER LE TOUR</button>
+      ${items.length?`<button class="neon-btn hot" id="extremeBeyond">AU-DELÀ DE TES LIMITES</button>`:""}
+      <button class="small" id="extremeLeave">QUITTER</button>
+    </div>`;
+
+  $("#extremeRestart").onclick=restartExtremeDiagnostic;
+  if($("#extremeBeyond"))$("#extremeBeyond").onclick=startExtremeLimits;
+  $("#extremeLeave").onclick=leaveExtreme;
+}
+function restartExtremeDiagnostic(){
+  if(!study || study.kind!=="extreme")return;
+  study.extremePhase="diagnostic";
+  study.extremeOrder=shuffledCopy(activePairs());
+  study.extremeIndex=0;
+  study.extremeDifficulties=new Map();
+  study.extremeConfirmations=new Map();
+  study.extremeQueue=[];
+  study.extremeTotal=study.extremeOrder.length;
+  study.n=0; study.locked=false;
+  $("#studyTitle").textContent="EXTRÊME — DIAGNOSTIC";
+  $("#extremeCheckpoint").classList.add("hidden");
+  nextStudyQuestion();
+}
+function startExtremeLimits(){
+  if(!study || study.kind!=="extreme" || !study.extremeDifficulties.size)return;
+  study.extremePhase="limits";
+  const difficult=[...study.extremeDifficulties.values()].map(x=>x.pair);
+  study.extremeConfirmations=new Map(difficult.map(p=>[extremePairKey(p),0]));
+  study.extremeQueue=shuffledCopy(difficult);
+  study.n=0; study.locked=false;
+  $("#studyTitle").textContent="EXTRÊME — AU-DELÀ DE TES LIMITES";
+  $("#extremeCheckpoint").classList.add("hidden");
+  nextStudyQuestion();
+}
+function finishExtremeMastery(){
+  stopQcmTimer();
+  study.locked=true;
+  $("#studyTitle").textContent="EXTRÊME — MAÎTRISE TOTALE";
+  $("#studyProgress").textContent="Toutes les difficultés ont été confirmées 2 fois";
+  $("#studyQuestion").textContent="MAÎTRISE TOTALE";
+  $("#writtenArea").classList.add("hidden");
+  $("#qcmTimerControls").classList.add("hidden");
+  $("#qcmTimeTrack").classList.add("hidden");
+  $("#studyFeedback").textContent="TES LIMITES ONT RECULÉ";
+  $("#studyFeedback").style.color="#72ff9d";
+  const box=$("#extremeCheckpoint");
+  box.classList.remove("hidden");
+  box.innerHTML=`<div class="extreme-actions"><button class="neon-btn" id="extremeAgain">RECOMMENCER LE TOUR</button><button class="small" id="extremeDone">QUITTER</button></div>`;
+  $("#extremeAgain").onclick=restartExtremeDiagnostic;
+  $("#extremeDone").onclick=leaveExtreme;
+}
+function leaveExtreme(){
+  stopQcmTimer();
+  $("#studyScreen").classList.remove("active");
+  study=null;
+  updateMasteryUI();
+}
 function stopQcmTimer(){
   if(study?.qcmTimer){cancelAnimationFrame(study.qcmTimer);study.qcmTimer=null}
 }
 function startQcmTimer(){
-  if(!study || study.kind!=="learn") return;
-  const total=Math.max(3,study.qcmCurrent||study.qcmSeconds||8);
+  if(!study || study.qcmSeconds<=0)return;
+  const total=Math.max(1,study.qcmCurrent||study.qcmSeconds||6);
   study.qcmStarted=performance.now();
   const tick=(now)=>{
-    if(!study || study.kind!=="learn" || study.locked)return;
+    if(!study || study.locked || study.qcmSeconds<=0)return;
     const left=Math.max(0,total-(now-study.qcmStarted)/1000);
     const c=$("#qcmCountdown"), fill=$("#qcmTimeFill");
     if(c){c.textContent=left.toFixed(1);c.classList.toggle("danger",left<=2.2)}
@@ -1377,26 +1995,33 @@ function startQcmTimer(){
 function timeoutStudyAnswer(){
   if(!study || study.locked)return;
   study.locked=true;
-  const r=recordAttempt(study.target.pair,false,"qcm-timeout",(study.qcmCurrent||study.qcmSeconds||8)*1000);
+  const source=study.kind==="learn"?"qcm-timeout":study.kind==="review"?"written-timeout":"extreme-timeout";
+  recordAttempt(study.target.pair,false,source,(study.qcmCurrent||study.qcmSeconds||6)*1000);
+  if(study.kind==="extreme")markExtremeResult(false,"timeout");
   $("#studyFeedback").textContent=study.target.answer;
   $("#studyFeedback").style.color="#ff4d67";
   $("#studyFeedback").classList.add("answer-reveal");
-  // Optional acceleration is earned by success, not by timeout.
   setTimeout(nextStudyQuestion,1050);
 }
 function refreshQcmTimerButtons(){
-  if(!study)return;
-  $$(".timer-choice").forEach(b=>b.classList.toggle("active",Number(b.dataset.qcmSeconds)===study.qcmSeconds));
-  const a=$("#qcmAccel");
-  if(a){a.classList.toggle("active",!!study.qcmAccel);a.textContent=`ACCÉLÉRATION : ${study.qcmAccel?"ON":"OFF"}`}
+  const c=$("#qcmCountdown");
+  if(c && study && study.qcmSeconds>0)c.textContent=Number(study.qcmCurrent||study.qcmSeconds).toFixed(1);
 }
 
 function renderQcm(){
-  const t=study.target, used=new Set([t.answer]), opts=[t.answer];
-  let pool=currentList.pairs.map(p=>p[t.side]).filter(x=>!used.has(x));
-  while(opts.length<Math.min(4,currentList.pairs.length) && pool.length){
-    const i=Math.floor(Math.random()*pool.length),v=pool.splice(i,1)[0];
-    if(!used.has(v)){used.add(v);opts.push(v)}
+  const t=study.target;
+  const validNorm=new Set((t.validAnswers||[t.answer]).map(normalizeAnswer));
+  const used=new Set([normalizeAnswer(t.answer)]), opts=[t.answer];
+  let pool=allSideAlternatives(t.side,activePairs())
+    .filter(x=>!validNorm.has(normalizeAnswer(x)) && !used.has(normalizeAnswer(x)));
+  if(pool.length<3){
+    pool=pool.concat(allSideAlternatives(t.side,currentList.pairs)
+      .filter(x=>!validNorm.has(normalizeAnswer(x)) && !used.has(normalizeAnswer(x)) &&
+                 !pool.some(y=>normalizeAnswer(y)===normalizeAnswer(x))));
+  }
+  while(opts.length<Math.min(4,Math.max(1,allSideAlternatives(t.side,currentList.pairs).length)) && pool.length){
+    const i=Math.floor(Math.random()*pool.length),v=pool.splice(i,1)[0],k=normalizeAnswer(v);
+    if(!used.has(k)){used.add(k);opts.push(v)}
   }
   opts.sort(()=>Math.random()-.5);
   $("#qcmArea").innerHTML="";
@@ -1409,13 +2034,11 @@ function answerStudy(value){
   if(!study||study.locked)return;
   study.locked=true;
   stopQcmTimer();
-  const ok=normalizeAnswer(value)===normalizeAnswer(study.target.answer);
+  const ok=(study.target.validAnswers||[study.target.answer]).some(a=>normalizeAnswer(value)===normalizeAnswer(a));
   const responseMs=Math.max(0,performance.now()-(study.qStart||performance.now()));
   const r=recordAttempt(study.target.pair,ok,study.kind==="learn"?"qcm":"written",responseMs);
-  if(study.kind==="learn"){
-    if(ok && study.qcmAccel) study.qcmCurrent=Math.max(3,(study.qcmCurrent||study.qcmSeconds)-0.5);
-    else if(!ok) study.qcmCurrent=study.qcmSeconds;
-  }
+  if(study.kind==="extreme")markExtremeResult(ok,ok?"correct":"error");
+  if(study.qcmSeconds>0)study.qcmCurrent=study.qcmSeconds;
   const feedback=$("#studyFeedback");
   if(ok){
     feedback.textContent=`✓ CORRECT · ${statusLabel(r.status)}`;
@@ -1442,24 +2065,18 @@ function finishStudy(){
 }
 $$("[data-study]").forEach(b=>b.onclick=()=>startStudy(b.dataset.study));
 
-$$(".timer-choice").forEach(b=>b.addEventListener("click",()=>{
-  if(!study || study.kind!=="learn")return;
-  study.qcmSeconds=Number(b.dataset.qcmSeconds)||8;
-  study.qcmCurrent=study.qcmSeconds;
-  refreshQcmTimerButtons();
-  stopQcmTimer(); startQcmTimer();
+$$("[data-timer-mode] [data-studyseconds]").forEach(b=>b.addEventListener("click",()=>{
+  const box=b.closest("[data-timer-mode]"), mode=box?.dataset.timerMode;
+  const seconds=Number(b.dataset.studyseconds);
+  if(mode==="learn")learningSeconds=seconds;
+  else if(mode==="review")revisionSeconds=seconds;
+  else if(mode==="extreme")extremeSeconds=seconds;
+  box?.querySelectorAll("[data-studyseconds]").forEach(x=>x.classList.toggle("active",x===b));
 }));
-$("#qcmAccel").addEventListener("click",()=>{
-  if(!study || study.kind!=="learn")return;
-  study.qcmAccel=!study.qcmAccel;
-  study.qcmCurrent=study.qcmSeconds;
-  refreshQcmTimerButtons();
-  stopQcmTimer(); startQcmTimer();
-});
 
 $("#studyValidate").onclick=()=>answerStudy($("#studyInput").value);
 $("#studyInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();answerStudy(e.currentTarget.value)}});
-$("#studyQuit").onclick=()=>{stopQcmTimer();$("#studyScreen").classList.remove("active");study=null;updateMasteryUI()};
+$("#studyQuit").onclick=()=>{if(study?.kind==="extreme")leaveExtreme();else{stopQcmTimer();$("#studyScreen").classList.remove("active");study=null;updateMasteryUI()}};
 
 
 
@@ -1467,6 +2084,13 @@ let wordBlastDifficulty="medium";
 const wbDifficultyFactors={easy:1.15,medium:1.65,hard:2.20};
 function wbDifficultyFactor(){
   return currentMode==="review" ? (wbDifficultyFactors[wordBlastDifficulty]||1.65) : 1;
+}
+function wordBlastDeviceSpeedFactor(){
+  // Touch screens need more reading/tapping time than desktop.
+  const w=$("#arena")?.clientWidth || window.innerWidth || 999;
+  if(w<=420) return .42;
+  if(w<=520) return .50;
+  return 1.35; // V55 desktop +35% vs original; mobile unchanged
 }
 function bindWordBlastDifficulty(){
   document.querySelectorAll("[data-wbdiff]").forEach(b=>{
@@ -1520,8 +2144,8 @@ function startGame(mode){
   $("#gameOver").classList.remove("active"); $("#victory").classList.remove("active"); $("#pauseOverlay").classList.remove("active"); $("#checkpoint").classList.remove("active");
   clearProjectiles();
   buildCity(MODE[mode].city);
-  const direction=Math.random()<MODE[mode].invert?"ba":"ab";
-  game={score:0,combo:1,bestCombo:1,speedCombo:0,wave:1,round:0,completed:0,goal:missionGoal(),repair:0,cityHp:MODE[mode].city,maxCity:MODE[mode].city,target:null,projectiles:[],running:true,paused:false,lastTs:performance.now(),cp:null,roundResolved:false,roundFailing:false,spawnPending:0,spawnTimers:[],roundToken:0,panic:0,direction,questionStart:null,responseTimes:[],correctTimes:[],attempts:0,wrongShots:0,sessionStarted:Date.now(),lastScoreShown:0,failSafeTimer:null,recentPairKeys:[]};
+  const direction=directionForQuestion();
+  game={score:0,combo:1,bestCombo:1,speedCombo:0,wave:1,round:0,completed:0,goal:missionGoal(),repair:0,cityWasHit:false,cityHp:MODE[mode].city,maxCity:MODE[mode].city,target:null,projectiles:[],running:true,paused:false,lastTs:performance.now(),cp:null,roundResolved:false,roundFailing:false,spawnPending:0,spawnTimers:[],roundToken:0,panic:0,direction,questionStart:null,responseTimes:[],correctTimes:[],attempts:0,wrongShots:0,sessionStarted:Date.now(),lastScoreShown:0,failSafeTimer:null,recentPairKeys:[]};
   updateHud(); updateFlameLevel(); nextRound(); requestAnimationFrame(loop);
 }
 
@@ -1584,7 +2208,11 @@ function weightedPair(){
 function pickTarget(){
   const p=weightedPair();
   const invert=game.direction==="ba";
-  return {pair:p,prompt:invert?p.b:p.a,answer:invert?p.a:p.b,answerSide:invert?'a':'b'};
+  const promptSide=invert?"b":"a", answerSide=invert?"a":"b";
+  const prompt=chooseOne(sideValues(p,promptSide),p[promptSide]);
+  const validAnswers=validAnswersForPrompt(prompt,promptSide,activePairs());
+  const answer=chooseOne(validAnswers,chooseOne(sideValues(p,answerSide),p[answerSide]));
+  return {pair:p,prompt,answer,validAnswers,promptSide,answerSide};
 }
 function cancelSpawnTimers(){
   if(!game)return;
@@ -1603,8 +2231,10 @@ function nextRound(){
   game.roundResolved=false;game.roundFailing=false;game.questionStart=null;
   game.round++;
   game.roundToken=(game.roundToken||0)+1;
+  if(selectedDirectionChoice==="mixed") game.direction=directionForQuestion();
   setRoundPalette();
   game.target=pickTarget();
+  updateHud();
   game.panic=0; $("#game").classList.remove("panic");
   $("#target").textContent=game.target.prompt;
   if(roundMonsterKind()==="nemesis"){
@@ -1619,30 +2249,47 @@ function spawnWave(){
   cancelSpawnTimers(); clearProjectiles();
   const token=game.roundToken, count=MODE[currentMode].count;
   const options=[{text:game.target.answer,correct:true,pair:game.target.pair}];
-  const used=new Set([game.target.answer]);
+  const used=new Set([normalizeAnswer(game.target.answer)]);
+  const validNorm=new Set((game.target.validAnswers||[game.target.answer]).map(normalizeAnswer));
   const answerSide=game.target.answerSide || "b";
   let source=activePairs();
-  let pool=source.map(p=>p[answerSide]).filter(x=>!used.has(x) && x!==game.target.prompt);
-  if(pool.length<count-1)pool=pool.concat(currentList.pairs.map(p=>p[answerSide]).filter(x=>!used.has(x)&&x!==game.target.prompt&&!pool.includes(x)));
+  let pool=allSideAlternatives(answerSide,source)
+    .filter(x=>!validNorm.has(normalizeAnswer(x)) && !used.has(normalizeAnswer(x)));
+  if(pool.length<count-1){
+    pool=pool.concat(allSideAlternatives(answerSide,currentList.pairs)
+      .filter(x=>!validNorm.has(normalizeAnswer(x)) && !used.has(normalizeAnswer(x)) &&
+                 !pool.some(y=>normalizeAnswer(y)===normalizeAnswer(x))));
+  }
   while(options.length<count && pool.length){
-    const i=Math.floor(Math.random()*pool.length),t=pool.splice(i,1)[0];
-    if(!used.has(t)){used.add(t);options.push({text:t,correct:false,pair:null})}
+    const i=Math.floor(Math.random()*pool.length),t=pool.splice(i,1)[0],k=normalizeAnswer(t);
+    if(!used.has(k)){used.add(k);options.push({text:t,correct:false,pair:null})}
   }
   // Correct answer is always one of the first two logical positions.
   const correct=options.shift(); options.sort(()=>Math.random()-.5);
   options.splice(Math.floor(Math.random()*Math.min(2,options.length+1)),0,correct);
 
   const arena=$("#arena"), W=arena.clientWidth;
-  const itemW=W<520?76:90;
-  const formations={
+  const mobile=W<=520;
+  const itemW=mobile?48:90;
+  const desktopFormations={
     3:[[-1,0],[0,30],[1,0]],
     4:[[-1.5,0],[-.5,30],[.5,30],[1.5,0]],
     5:[[0,0],[-1,30],[1,30],[-2,62],[2,62]],
     6:[[-.5,0],[.5,0],[-1.5,30],[1.5,30],[-.5,62],[.5,62]]
   };
-  const form=formations[options.length]||options.map((_,i)=>[i-(options.length-1)/2,(i%2)*30]);
+  const mobileFormations={
+    3:[[-1,0],[0,0],[1,0]],
+    4:[[-.55,0],[.55,0],[-.55,72],[.55,72]],
+    5:[[-1,0],[0,0],[1,0],[-.55,72],[.55,72]],
+    6:[[-1,0],[0,0],[1,0],[-1,72],[0,72],[1,72]]
+  };
+  const form=mobile
+    ? (mobileFormations[options.length]||options.map((_,i)=>[(i%3)-1,Math.floor(i/3)*72]))
+    : (desktopFormations[options.length]||options.map((_,i)=>[i-(options.length-1)/2,(i%2)*30]));
   const maxAbs=Math.max(...form.map(v=>Math.abs(v[0])),1);
-  const step=Math.min(itemW+10,(W*.72-itemW)/(maxAbs*2));
+  const step=mobile
+    ? Math.min(92,Math.max(72,(W-itemW-30)/2))
+    : Math.min(itemW+22,(W*.82-itemW)/(maxAbs*2)); // V56: a little more desktop breathing room
   const cx=W/2;
   game.spawnPending=options.length;
   game.volleyReady=false;
@@ -1667,11 +2314,11 @@ function spawnProjectileAt(data,token,x,index,formationY=0){
   const el=document.createElement("div"),kind=roundMonsterKind();
   el.className="projectile "+kind+" staging";data.splitter=kind==="splitter";
   dressMonster(el,data.text,kind);$("#arena").appendChild(el);
-  const y=12+formationY;
+  const y=6+formationY;
   el.style.left=Math.max(8,Math.min($("#arena").clientWidth-el.offsetWidth-8,x))+"px";el.style.top=y+"px";
   const typeSpeed=kind==="fast"?1.34:(kind==="nemesis"?.90:(kind==="armored"?.92:1));
   const obj={el,y,x:parseFloat(el.style.left),correct:data.correct,pair:data.pair,splitter:data.splitter,text:data.text,kind,
-    speed:MODE[currentMode].speed*wbDifficultyFactor()*typeSpeed*(.96+Math.random()*.08),startFallAt:Infinity};
+    speed:MODE[currentMode].speed*wbDifficultyFactor()*wordBlastDeviceSpeedFactor()*typeSpeed*(.96+Math.random()*.08),startFallAt:Infinity};
   game.projectiles.push(obj);el.onclick=()=>hitProjectile(obj);
 }
 
@@ -1757,7 +2404,7 @@ function spawnProjectile(data,token=game?.roundToken){
   el.style.left=x+"px";
   const typeSpeed = kind==="fast" ? 1.34 : kind==="nemesis" ? .90 : kind==="armored" ? .92 : 1;
   const obj={el,y:-150,x,correct:data.correct,pair:data.pair,splitter:data.splitter,text:data.text,kind,
-             speed:MODE[currentMode].speed*wbDifficultyFactor()*typeSpeed*(.90+Math.random()*.16)};
+             speed:MODE[currentMode].speed*wbDifficultyFactor()*wordBlastDeviceSpeedFactor()*typeSpeed*(.90+Math.random()*.16)};
   game.projectiles.push(obj);
   el.onclick=()=>hitProjectile(obj);
 }
@@ -1766,7 +2413,7 @@ function spawnMini(text,x,y){
   const arena=$("#arena");
   const el=document.createElement("div"); el.className="projectile splitter mini"; dressMonster(el,text,'splitter');
   arena.appendChild(el); x=Math.max(18,Math.min(arena.clientWidth-76,x)); el.style.left=x+"px"; el.style.top=y+"px";
-  const obj={el,y,x,correct:false,pair:null,splitter:false,text,kind:'splitter',speed:MODE[currentMode].speed*wbDifficultyFactor()*1.65*(1+.12*(game.panic||0))};
+  const obj={el,y,x,correct:false,pair:null,splitter:false,text,kind:'splitter',speed:MODE[currentMode].speed*wbDifficultyFactor()*wordBlastDeviceSpeedFactor()*1.65*(1+.12*(game.panic||0))};
   game.projectiles.push(obj); el.onclick=()=>hitProjectile(obj);
 }
 function hitProjectile(obj){
@@ -1805,7 +2452,12 @@ function hitProjectile(obj){
     game.projectiles.filter(p=>p!==obj).forEach((p,i)=>{
       setTimeout(()=>{if(p.el?.isConnected){showSpriteEffect("local",p.x+p.el.offsetWidth/2,p.y+p.el.offsetHeight/2);p.el.style.opacity=".08"}},90+i*35);
     });
-    if(game.repair>=5){setTimeout(()=>{if(game?.running)cityRepair()},280);game.repair=0}
+    /* Five clean WORD BLASTS: repair immediately if the city is damaged.
+       The counter remains invisible. */
+    if(game.repair>=5){
+      cityRepair();
+      game.repair=0;
+    }
     updateHud();
     setTimeout(afterSuccessfulRound,480);
   }else{
@@ -1886,6 +2538,7 @@ function groundImpact(obj){
 }
 function damageCity(allowEnd=true){
   if(!game||!game.running)return;
+  game.cityWasHit=true;
   try{AudioEngine.fx.cityHit()}catch(e){}
   game.cityHp=Math.max(0,game.cityHp-1);
   game.combo=1;game.speedCombo=0;game.repair=0;
@@ -1908,13 +2561,35 @@ function damageCity(allowEnd=true){
   if(allowEnd && game.cityHp<=0)endGame();
 }
 function cityRepair(){
-  if(game.cityHp>=game.maxCity){floating("PERFECT DEFENSE");return;}
-  const dead=[...$("#city .building.dead")];
-  if(dead.length){
-    const b=dead[Math.floor(Math.random()*dead.length)];
-    b.classList.remove("dead");b.classList.add("repair");setTimeout(()=>b.classList.remove("repair"),650);
-    game.cityHp++; AudioEngine.fx.repair(); floating("CITY REPAIR +1"); updateHud();
+  if(!game||!game.running)return false;
+
+  /* The city DOM is the visual source of truth.
+     Do not abort just because cityHp got out of sync with a destroyed building. */
+  const city=$("#city");
+  if(!city)return false;
+  const dead=[...city.querySelectorAll(".building.dead")];
+
+  if(!dead.length){
+    game.cityHp=game.maxCity;
+    return false;
   }
+
+  const b=dead[Math.floor(Math.random()*dead.length)];
+  b.classList.remove("dead","hit");
+  b.classList.add("repair");
+
+  /* Reconcile lives with the actual number of rebuilt buildings. */
+  const remainingDead=city.querySelectorAll(".building.dead").length;
+  game.cityHp=Math.max(0,Math.min(game.maxCity,game.maxCity-remainingDead));
+
+  try{AudioEngine.fx.repair()}catch(e){}
+  try{floating("CITY REPAIR +1")}catch(e){}
+  try{updateHud()}catch(e){}
+
+  setTimeout(()=>{
+    try{b.classList.remove("repair")}catch(e){}
+  },850);
+  return true;
 }
 function removeProjectile(obj){obj.el.remove();game.projectiles=game.projectiles.filter(p=>p!==obj)}
 function clearProjectiles(){if(game?.projectiles)game.projectiles.forEach(p=>p.el.remove());if(game)game.projectiles=[]}
@@ -2106,6 +2781,8 @@ function winGame(){
   fillEndStats(true);const rewards=finishSessionRecord("win");
   game.running=false;game.spawnPending=0;clearProjectiles();AudioEngine.stop();
   $("#victoryReward").textContent=rewards.newHigh?"★ NOUVEAU HIGH SCORE ★":rewards.newSpeed?"⚡ NOUVEAU RECORD DE VITESSE !":"BRAVO !";
+  const perfect=$("#victoryPerfect");
+  if(perfect) perfect.hidden=!!game.cityWasHit;
   $("#victory").classList.add("active");
 }
 function pauseGame(){
@@ -2118,7 +2795,14 @@ function quitToMenu(){
   if(game?.failSafeTimer){clearTimeout(game.failSafeTimer);game.failSafeTimer=null}
   cancelSpawnTimers();
   if(game){game.running=false;game.paused=false;game.spawnPending=0;clearProjectiles()}
-  AudioEngine.stop();$("#quitConfirm").classList.remove("active");$("#pauseOverlay").classList.remove("active");$("#victory").classList.remove("active");$("#gameOver").classList.remove("active");$("#game").classList.remove("active");show("home");
+  AudioEngine.stop();
+  $("#quitConfirm").classList.remove("active");
+  $("#pauseOverlay").classList.remove("active");
+  $("#victory").classList.remove("active");
+  $("#gameOver").classList.remove("active");
+  $("#game").classList.remove("active");
+  // Preserve the selected sheet/portion and return to CHOIX DE JEU.
+  menuFromActiveContext();
 }
 function askQuit(){
   if(!game?.running)return;
@@ -2162,7 +2846,8 @@ $("#sfxBtn").onclick=()=>{
   $("#sfxBtn").classList.toggle("off",!on);
 };
 
-returnToModeChoice();
+/* V61: startup is controlled only by DOMContentLoaded, preventing
+   the game-choice screen from flashing before HOME. */
 
 $("#exportProfileBtn").onclick=()=>{
   if(!currentList)return;
