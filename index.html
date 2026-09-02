@@ -974,6 +974,42 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
   .projectile:hover{z-index:60!important}
 }
 
+
+/* V67 — long Word Blast proposals: controlled two-line answer plate.
+   Short answers keep the validated V44/V65 geometry unchanged. */
+.projectile .answer.long-answer{
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  width:150px!important;
+  max-width:150px!important;
+  min-height:32px!important;
+  line-height:1.05!important;
+  text-align:center!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.projectile:has(.answer.long-answer)::after{
+  width:158px!important;
+  height:40px!important;
+}
+@media(max-width:520px){
+  .projectile .answer.long-answer{
+    width:82px!important;
+    max-width:82px!important;
+    min-width:82px!important;
+    min-height:25px!important;
+    font-size:8.5px!important;
+    line-height:1.05!important;
+    padding:2px 3px!important;
+  }
+  .projectile:has(.answer.long-answer)::after{
+    width:88px!important;
+    height:31px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2288,18 +2324,18 @@ function spawnWave(){
     6:[[-1.42,0],[-.02,0],[1.38,0],[-1.38,68],[.02,68],[1.42,68]]
   };
   const mobileFormations={
-    3:[[-1.18,0],[0,0],[1.18,0]],
-    4:[[-.74,0],[.54,0],[-.54,80],[.74,80]],
-    5:[[-1.18,0],[0,0],[1.18,0],[-.74,80],[.54,80]],
-    6:[[-1.28,0],[0,0],[1.28,0],[-1.28,80],[0,80],[1.28,80]]
+    3:[[-1.22,0],[-.08,0],[1.06,0]],
+    4:[[-.80,0],[.44,0],[-.60,80],[.64,80]],
+    5:[[-1.22,0],[-.08,0],[1.06,0],[-.80,80],[.44,80]],
+    6:[[-1.30,0],[-.16,0],[.98,0],[-1.18,80],[-.04,80],[1.10,80]]
   };
   const form=mobile
     ? (mobileFormations[options.length]||options.map((_,i)=>[(i%3)-1,Math.floor(i/3)*72]))
     : (desktopFormations[options.length]||options.map((_,i)=>[i-(options.length-1)/2,(i%2)*30]));
   const maxAbs=Math.max(...form.map(v=>Math.abs(v[0])),1);
   const step=mobile
-    ? Math.min(106,Math.max(82,(W-itemW-14)/2))
-    : Math.min(itemW+48,(W*.96-itemW)/(maxAbs*2)); // V64: use nearly the full arena width
+    ? Math.min(100,Math.max(80,(W-itemW-30)/2)) // V65: reserve right-side lane for mobile flame gauge
+    : Math.min(itemW+48,(W*.96-itemW)/(maxAbs*2)); // desktop V64 unchanged
   const cx=W/2;
   game.spawnPending=options.length;
   game.volleyReady=false;
@@ -2333,7 +2369,16 @@ function spawnProjectileAt(data,token,centerX,index,formationY=0){
   const typeSpeed=kind==="fast"?1.34:(kind==="nemesis"?.90:(kind==="armored"?.92:1));
   const obj={el,y,x:parseFloat(el.style.left),correct:data.correct,pair:data.pair,splitter:data.splitter,text:data.text,kind,
     speed:MODE[currentMode].speed*wbDifficultyFactor()*wordBlastDeviceSpeedFactor()*typeSpeed*(.96+Math.random()*.08),startFallAt:Infinity};
-  game.projectiles.push(obj);el.onclick=()=>hitProjectile(obj);
+  game.projectiles.push(obj);
+
+  // V66 — desktop hover foreground.
+  // Inline z-index avoids older/high-specificity projectile rules overriding it.
+  if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
+    el.addEventListener("pointerenter",()=>{ el.style.zIndex="999"; });
+    el.addEventListener("pointerleave",()=>{ el.style.zIndex="4"; });
+  }
+
+  el.onclick=()=>hitProjectile(obj);
 }
 
 function validX(width){
@@ -2395,7 +2440,14 @@ function monsterMarkup(text,kind){
 }
 function dressMonster(el,text,kind){
   el.innerHTML=monsterMarkup(text,kind);
-  el.querySelector('.answer').textContent=text;
+  const answer=el.querySelector('.answer');
+  answer.textContent=text;
+  /* V67 — keep normal answers on one line; only genuinely long labels
+     get a two-line plate in front of the monster. */
+  const clean=String(text??"").trim();
+  if(clean.length>15 || (clean.length>11 && clean.includes(" "))){
+    answer.classList.add("long-answer");
+  }
 }
 function spawnProjectile(data,token=game?.roundToken){
   if(!game || !game.running || game.paused || game.roundResolved || token!==game.roundToken || $("#checkpoint").classList.contains("active"))return;
