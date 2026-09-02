@@ -308,6 +308,7 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
 
 
 /* ===== V12: WORD BLAST flame progression + compact monsters ===== */
+/* V73: this same side tube now displays the 0–5 CITY REPAIR charge. */
 #flameLevel{
   position:absolute; z-index:42; right:8px; top:50%; transform:translateY(-50%);
   width:48px; height:76%; display:flex; flex-direction:column; align-items:center;
@@ -1049,6 +1050,92 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
   text-shadow:0 0 7px rgba(255,79,216,.8)!important;
 }
 
+/* ===== V71 — protected additive layer ===== */
+.v71-hidden-legacy{display:none!important}
+#savedLists .resetCov{display:none!important}
+.study-panel .mastery-strip,.study-panel .mastery-strip + .profile-note{display:none!important}
+.v71-mastery-box{margin:6px 0 14px;padding:10px 11px;border:1px solid rgba(176,108,255,.42);background:linear-gradient(180deg,rgba(11,5,25,.72),rgba(2,5,12,.72));box-shadow:inset 0 0 18px rgba(176,108,255,.08)}
+.v71-mastery-head{display:flex;justify-content:space-between;gap:12px;align-items:center;color:#d9c6ff;font-size:10px;letter-spacing:.1em;margin-bottom:8px}
+.v71-mastery-head strong{color:#72ff9d;font-size:11px}
+.v71-mastery-bar{height:13px;display:flex;gap:1px;padding:2px;border:1px solid #332050;background:#02050b;overflow:hidden}
+.v71-mastery-bar i{display:block;min-width:2px;flex:1;background:#101421;box-shadow:inset 0 0 3px #000}
+.v71-mastery-bar i.seen{background:#9a53ff;box-shadow:0 0 7px rgba(154,83,255,.55)}
+.v71-mastery-bar i.mastered{background:#56ff8f;box-shadow:0 0 8px rgba(86,255,143,.65)}
+.v71-mastery-legend{display:flex;justify-content:flex-end;gap:14px;margin-top:7px;color:#8290a8;font-size:8px;letter-spacing:.07em}
+.v71-mastery-legend b{display:inline-block;width:7px;height:7px;margin-right:5px;vertical-align:middle}.v71-mastery-legend .purple{background:#9a53ff;box-shadow:0 0 5px #9a53ff}.v71-mastery-legend .green{background:#56ff8f;box-shadow:0 0 5px #56ff8f}
+.v71-options-btn{display:block;margin:0 auto 16px;min-width:160px}
+.v71-overlay{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.86);backdrop-filter:blur(4px)}
+.v71-overlay.active{display:flex}
+.v71-dialog{width:min(720px,96vw);max-height:88vh;overflow:auto;padding:18px;border:1px solid #a85dff;background:#030611;box-shadow:0 0 28px rgba(168,93,255,.25),inset 0 0 30px rgba(57,243,255,.04)}
+.v71-dialog-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.v71-dialog h2{margin:0 0 14px;color:#f0ddff}
+.v71-option-section{padding:13px 0;border-top:1px solid #172338}.v71-option-section h3{font-size:10px;color:#39f3ff;letter-spacing:.12em;margin:0 0 9px}.v71-option-section p{font-size:9px;color:#8394aa;line-height:1.45;margin:7px 0}
+.v71-opt-row{display:flex;gap:7px;flex-wrap:wrap}.v71-opt-btn{border:1px solid #38506a;background:#050a13;color:#bdd8f0;padding:8px 10px;font:inherit;font-size:9px;cursor:pointer}.v71-opt-btn.active{border-color:#ff4fd8;color:#fff;box-shadow:0 0 9px rgba(255,79,216,.55)}
+.v71-opt-btn small{display:block;font-size:7px;color:#778ba5;margin-top:3px}.v71-portion-line{display:grid;grid-template-columns:90px 1fr;gap:8px;align-items:start;margin:8px 0}.v71-portion-line>span{font-size:8px;color:#8fa4ba;padding-top:8px}.v71-portion-line>div{display:flex;gap:5px;flex-wrap:wrap}
+#v71TrackSelect{background:#050a13;color:#bdd8f0;border:1px solid #38506a;padding:8px;font:inherit;font-size:9px}
+.v71-diff-dialog{text-align:center;width:min(520px,94vw)}.v71-diff-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:15px 0}.v71-diff-grid .neon-btn{width:100%;margin:0}
+.v71-session-summary{border:1px solid #28394d;background:#030812;padding:13px;margin:10px 0;font-size:10px;line-height:1.65;color:#a9bad0;text-align:center}.v71-session-summary strong{color:#39f3ff}.v71-session-summary span{color:#d59aff}
+.v71-extreme-gauge{position:absolute;right:12px;top:50%;transform:translateY(-42%);z-index:8;text-align:center;transition:.18s}.v71-extreme-gauge.hidden{display:none}.v71-gauge-label{font-size:7px;color:#8ca5ba;letter-spacing:.08em;margin-bottom:6px}.v71-tower{display:flex;flex-direction:column;gap:5px;align-items:center;padding:8px 6px;border:1px solid rgba(57,243,255,.18);background:rgba(0,0,0,.48)}.v71-tower i{width:10px;height:10px;border-radius:50%;background:#141b26;border:1px solid #31445a;transition:.22s}.v71-tower i.up.lit{background:#56ff8f;border-color:#9affbb;box-shadow:0 0 9px #56ff8f}.v71-tower i.down.lit{background:#ff436b;border-color:#ff8ba1;box-shadow:0 0 9px #ff436b}.v71-tower i.neutral.current{background:#edf4ff;box-shadow:0 0 8px #fff}.v71-tower i.current{transform:scale(1.28)}.v71-extreme-gauge.explode{animation:v71GaugeBlast .7s ease forwards}@keyframes v71GaugeBlast{0%{filter:brightness(1);transform:translateY(-42%) scale(1)}35%{filter:brightness(2.8);transform:translateY(-42%) scale(1.18)}100%{opacity:0;filter:blur(8px);transform:translateY(-42%) scale(1.7)}}
+#v71ValidatedFlash{position:fixed;left:50%;top:45%;transform:translate(-50%,-50%) scale(.75);z-index:13000;pointer-events:none;opacity:0;color:#39a8ff;font-size:28px;letter-spacing:.18em;text-shadow:0 0 8px #39a8ff,0 0 20px #177cff;transition:.16s}#v71ValidatedFlash.show{opacity:1;transform:translate(-50%,-50%) scale(1.05)}
+@media(max-width:520px){.v71-mastery-legend{justify-content:space-between;gap:5px;font-size:7px}.v71-dialog{padding:13px}.v71-portion-line{grid-template-columns:1fr}.v71-portion-line>span{padding-top:0}.v71-extreme-gauge{right:5px;top:47%}.v71-tower{padding:6px 4px;gap:4px}.v71-tower i{width:8px;height:8px}.v71-diff-grid{grid-template-columns:1fr 1fr}}
+#studyQuestion.v71-validating{animation:v71WordBlastOut .72s ease forwards}@keyframes v71WordBlastOut{0%{opacity:1;filter:brightness(1);transform:scale(1)}35%{opacity:1;filter:brightness(2);transform:scale(1.08)}100%{opacity:0;filter:blur(7px);transform:scale(1.25)}}
+
+
+/* ===== V74 — alertes arcade, bilan des difficultés, centrage difficulté ===== */
+.v71-diff-grid.v74-three{grid-template-columns:repeat(3,minmax(0,1fr));justify-content:center}
+.v74-weak-wrap{margin:12px 0 4px;text-align:left}
+.v74-weak-title{font-size:9px;letter-spacing:.12em;color:#ff8bdc;text-align:center;margin:0 0 7px;text-shadow:0 0 8px rgba(255,79,216,.5)}
+.v74-weak-list{max-height:230px;overflow:auto;border:1px solid rgba(176,108,255,.35);background:#02060d;padding:5px 8px;box-shadow:inset 0 0 18px rgba(154,83,255,.05)}
+.v74-weak-list>div{padding:7px 6px;border-bottom:1px solid #172237;color:#e8e5ff;font-size:9px;line-height:1.35;text-align:center}
+.v74-weak-list>div:last-child{border-bottom:0}
+.v74-quit-dialog{width:min(560px,94vw);text-align:center;border-color:#ff4fd8;box-shadow:0 0 30px rgba(255,79,216,.22),inset 0 0 30px rgba(57,243,255,.04)}
+.v74-quit-dialog h2{color:#ff9de7;text-shadow:0 0 10px rgba(255,79,216,.55);margin-bottom:10px}
+.v74-quit-copy{color:#c7d9e8;font-size:10px;line-height:1.65;margin:8px 0 14px}
+.v74-quit-copy strong{color:#39f3ff;font-size:12px}
+.v74-quit-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:13px}
+.v74-quit-actions .neon-btn{min-width:190px}
+@media(max-width:520px){
+  .v71-diff-grid.v74-three{grid-template-columns:1fr}
+  .v74-quit-actions .neon-btn{width:100%;min-width:0}
+  .v74-weak-list{max-height:190px}
+}
+
+
+/* ===== V75 — progression Extrême intégrée au panneau central ===== */
+.v71-extreme-gauge{
+  position:static!important;
+  right:auto!important;top:auto!important;
+  transform:none!important;
+  z-index:auto;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin:10px auto 14px;
+  text-align:center;
+}
+.v71-extreme-gauge.hidden{display:none!important}
+.v71-extreme-gauge .v71-gauge-label{font-size:8px;margin-bottom:7px;color:#9bb4ca}
+.v71-extreme-gauge .v71-tower{
+  flex-direction:row-reverse;
+  gap:8px;
+  padding:8px 12px;
+  min-height:30px;
+  border-color:rgba(57,243,255,.30);
+  box-shadow:inset 0 0 16px rgba(57,243,255,.045),0 0 12px rgba(57,243,255,.06);
+}
+.v71-extreme-gauge .v71-tower i{width:11px;height:11px}
+.v71-extreme-gauge.explode{animation:v75GaugeBlast .7s ease forwards}
+@keyframes v75GaugeBlast{
+  0%{opacity:1;filter:brightness(1);transform:scale(1)}
+  35%{opacity:1;filter:brightness(2.8);transform:scale(1.18)}
+  100%{opacity:0;filter:blur(8px);transform:scale(1.7)}
+}
+@media(max-width:520px){
+  .v71-extreme-gauge{margin:8px auto 11px!important}
+  .v71-extreme-gauge .v71-tower{gap:6px;padding:7px 9px}
+  .v71-extreme-gauge .v71-tower i{width:9px;height:9px}
+}
 </style>
 </head>
 <body>
@@ -1230,7 +1317,7 @@ repeating-linear-gradient(90deg,transparent 0 13px,rgba(255,255,170,.75) 13px 17
   </div>
   <div id="playfield">
     <div id="arena"><div id="flameLevel" aria-label="Progression du niveau">
-  <div class="flame-label">LEVEL</div>
+  <div class="flame-label">REPAIR</div>
   <div class="flame-tube">
     <div id="flameFill">
       <div class="flame-fire">🔥</div>
@@ -2438,6 +2525,7 @@ function updateHud(){
   $("#energyPulse").style.left=pct+"%";
   $("#directionLabel").textContent=directionText();
   $("#repairMeter").textContent=`REPAIR ${"█".repeat(game.repair)}${"░".repeat(5-game.repair)} ${game.repair}/5`;
+  updateFlameLevel();
 }
 function fmtTime(ms){return Number.isFinite(ms)?(ms/1000).toFixed(2)+" s":"—"}
 function sessionAverage(){
@@ -2542,9 +2630,11 @@ function spawnWave(){
     const i=Math.floor(Math.random()*pool.length),t=pool.splice(i,1)[0],k=normalizeAnswer(t);
     if(!used.has(k)){used.add(k);options.push({text:t,correct:false,pair:null})}
   }
-  // Correct answer is always one of the first two logical positions.
+  // V78 — distribute the correct target uniformly across every formation slot.
+  // Previously it was forced into one of the first two logical positions,
+  // which made the middle/left targets noticeably more likely to be correct.
   const correct=options.shift(); options.sort(()=>Math.random()-.5);
-  options.splice(Math.floor(Math.random()*Math.min(2,options.length+1)),0,correct);
+  options.splice(Math.floor(Math.random()*(options.length+1)),0,correct);
 
   const arena=$("#arena"), W=arena.clientWidth;
   const mobile=W<=520;
@@ -2653,19 +2743,23 @@ function showSpriteEffect(kind,x,y){
 }
 
 
+/* V73 — the visible side gauge is the CITY REPAIR charge.
+   It mirrors the existing 5-clean-WORD-BLAST repair mechanic instead of
+   showing a decorative/duplicate level progression. */
 function updateFlameLevel(anim){
-  const goal=Math.max(1,game.goal||1);
-  game.flameProgress=Math.max(0,Math.min(goal,game.flameProgress||0));
-  const pct=(game.flameProgress/goal)*100;
+  if(!game)return;
+  game.repair=Math.max(0,Math.min(5,game.repair||0));
+  const pct=(game.repair/5)*100;
   const fill=$("#flameFill"), meter=$("#flameLevel");
   if(fill) fill.style.height=pct+"%";
-  const count=$("#flameCount"); if(count) count.textContent=game.flameProgress+"/"+goal;
+  const count=$("#flameCount"); if(count) count.textContent=game.repair+"/5";
   if(meter && anim){
     meter.classList.remove("rise","drop"); void meter.offsetWidth; meter.classList.add(anim);
   }
 }
 function flameStep(delta){
-  game.flameProgress=Math.max(0,Math.min(game.goal,(game.flameProgress||0)+delta));
+  /* Compatibility shim: callers already update game.repair themselves.
+     Only animate/redraw the repair gauge here. */
   updateFlameLevel(delta>0?"rise":delta<0?"drop":"");
 }
 
@@ -2756,9 +2850,10 @@ function hitProjectile(obj){
     /* Five clean WORD BLASTS: repair immediately if the city is damaged.
        The counter remains invisible. */
     if(game.repair>=5){
-      cityRepair();
-      game.repair=0;
+      const repaired=cityRepair();
+      if(repaired) game.repair=0; // if city is intact, keep the gauge fully charged
     }
+    updateFlameLevel();
     updateHud();
     setTimeout(afterSuccessfulRound,480);
   }else{
@@ -2767,7 +2862,7 @@ function hitProjectile(obj){
     recordAttempt(game.target.pair,false,"wordblast-wrong",responseMs);
     game.sessionWeak.set(pairKey(game.target.pair),{pair:game.target.pair,reason:"error"});
     AudioEngine.fx.smallBlast();game.combo=1;game.speedCombo=0;
-    flameStep(-1);game.repair=0;game.panic=Math.min(3,(game.panic||0)+1);
+    game.repair=0;flameStep(-1);game.panic=Math.min(3,(game.panic||0)+1);
     const mult=[1,1.35,1.60,1.85][game.panic];
     game.projectiles.forEach(p=>{if(p!==obj)p.speed*=mult});
     $("#game").classList.add("panic");arcadePop("COMBO BREAK !",obj.x+obj.el.offsetWidth/2,obj.y);
@@ -2836,6 +2931,14 @@ function groundImpact(obj){
 
   // Effects happen after the state transition and cannot block it.
   try{explodeAtGround(obj)}catch(e){console.warn("ground explosion error",e)}
+
+  // V72 — la destruction du dernier bâtiment doit terminer la partie dans
+  // la même frame. Avant, damageCity(false) attendait la fin de la salve :
+  // la ville pouvait donc être visuellement détruite tandis que les derniers
+  // monstres continuaient encore à tomber pendant un court instant.
+  if(game && game.running && game.cityHp<=0){
+    endGame();
+  }
   return true;
 }
 function damageCity(allowEnd=true){
@@ -2843,7 +2946,7 @@ function damageCity(allowEnd=true){
   game.cityWasHit=true;
   try{AudioEngine.fx.cityHit()}catch(e){}
   game.cityHp=Math.max(0,game.cityHp-1);
-  game.combo=1;game.speedCombo=0;game.repair=0;
+  game.combo=1;game.speedCombo=0;if(game.repair<5)game.repair=0;
 
   try{
     const buildings=[...document.querySelectorAll("#city .building")];
@@ -2859,6 +2962,14 @@ function damageCity(allowEnd=true){
   }catch(e){console.warn("city landscape error",e)}
 
   try{floating("CITY HIT! −1")}catch(e){}
+
+  /* V73 — a full REPAIR gauge waits while the city is intact.
+     The first subsequent destroyed building consumes the stored charge. */
+  if(game.repair>=5){
+    const repaired=cityRepair();
+    if(repaired) game.repair=0;
+  }
+  try{updateFlameLevel()}catch(e){}
   try{updateHud()}catch(e){}
   if(allowEnd && game.cityHp<=0)endGame();
 }
@@ -3053,6 +3164,7 @@ $("#cpInput").addEventListener("keydown",e=>{
     $("#cpFeedback").textContent=`RÉPONSE : ${q.answer}`;
     $("#cpFeedback").style.color="var(--danger)";
   }
+  updateFlameLevel();
   updateHud();
   game.cp.index++;
   setTimeout(()=>{
@@ -3060,7 +3172,7 @@ $("#cpInput").addEventListener("keydown",e=>{
       $("#checkpoint").classList.remove("active");
       AudioEngine.checkpoint(false);
       if(game.cp.perfect){floating("PERFECT TRANSMISSION");cityRepair();}
-      if(game.repair>=5){game.repair=0;cityRepair();}
+      if(game.repair>=5){const repaired=cityRepair();if(repaired)game.repair=0;updateFlameLevel();}
       nextRound();
     }else showCp();
   },700);
@@ -3291,6 +3403,379 @@ window.addEventListener("DOMContentLoaded",()=>{
     show("home");
   }catch(e){console.warn("startup screen reset",e);}
 });
+</script>
+
+<script>
+/* ===== V77 — Extreme mastery clears stale weak state ===== */
+/* ===== V76 — reset progression now clears mastery/weak/extreme state too ===== */
+/* ===== V71 — options, study mastery, new Extreme ===== */
+(function(){
+  const V71 = window.V71 = {pendingMode:null};
+  const keyId=()=>String(currentList?.id||currentList?.name||"list");
+  const pKey=p=>coveragePairKey(p);
+  const loadJSON=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch(_){return JSON.parse(JSON.stringify(f))}};
+  const saveJSON=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+  const masteryKey=()=>"wb_v71_mastery_"+keyId();
+  const weakKey=()=>"wb_v71_weak_"+keyId();
+  const extremeKey=()=>"wb_v71_extreme_"+keyId();
+
+  function masteryData(){return loadJSON(masteryKey(),{});}
+  function weakData(){return loadJSON(weakKey(),{});}
+  function saveMastery(x){saveJSON(masteryKey(),x);}
+  function saveWeak(x){saveJSON(weakKey(),x);}
+  function pairByCoverageKey(k){return (currentList?.pairs||[]).find(p=>pKey(p)===k)||null;}
+  function activeKeys(){return new Set(activePairs().map(pKey));}
+
+  function v71CoverageInfo(){
+    const keys=activeKeys(), c=loadCoverage();
+    const seen=new Set((c.seen||[]).filter(k=>keys.has(k)));
+    return {seen:seen.size,total:keys.size,complete:keys.size>0&&seen.size>=keys.size};
+  }
+
+  function masteryState(p){
+    const d=masteryData()[pKey(p)]||{};
+    const w=weakData()[pKey(p)]||{};
+    if(!w.level && (d.extremeConfirmed || (d.reviewValid||0)>=3)) return "mastered";
+    if((d.reviewAttempts||0)>0 || w.level) return "seen";
+    return "new";
+  }
+
+  function renderV71Mastery(){
+    const box=document.getElementById("v71MasteryBox"); if(!box||!currentList)return;
+    const pairs=activePairs();
+    let mastered=0,seen=0;
+    const segs=pairs.map(p=>{const st=masteryState(p);if(st==="mastered")mastered++;if(st!=="new")seen++;return `<i class="${st}" title="${st==='mastered'?'Maîtrisé':st==='seen'?'Vu / à consolider':'Non évalué en révision'}"></i>`}).join("");
+    const part=selectedPortion.parts===1?"TOUTE LA FICHE":`${selectedPortion.part+1}/${selectedPortion.parts}`;
+    box.innerHTML=`<div class="v71-mastery-head"><span>MAÎTRISE · ${part}</span><strong>${mastered}/${pairs.length}</strong></div><div class="v71-mastery-bar">${segs}</div><div class="v71-mastery-legend"><span><b class="purple"></b>${seen-mastered} EN COURS</span><span><b class="green"></b>${mastered} MAÎTRISÉS ×3</span></div>`;
+  }
+
+  const oldUpdateMasteryUI=updateMasteryUI;
+  updateMasteryUI=function(){ try{oldUpdateMasteryUI()}catch(_){} renderV71Mastery(); };
+
+  function setPortionV71(parts,part){
+    const n=currentList.pairs.length,[a,b]=balancedRanges(n,parts)[part];
+    selectedPortion={parts,part,start:a,end:b,indices:Array.from({length:b-a},(_,i)=>a+i)};
+    Object.keys(modeQuestionGoals).forEach(k=>modeQuestionGoals[k]=null);
+    renderModeContext(); renderOptions(); renderV71Mastery();
+  }
+  setPortion=setPortionV71;
+  portionDivisions=function(n){const d=[1];if(n>=12)d.push(2);if(n>=30)d.push(3);if(n>=40)d.push(4);return d;};
+
+  function questionGoal(){
+    const n=activePairs().length;
+    const saved=Number(localStorage.getItem("wb_v71_qgoal_"+keyId()))||Math.min(10,n);
+    return qChoices(n).includes(saved)?saved:Math.min(10,n);
+  }
+  sessionGoal=function(mode){if(mode==="extreme")return activePairs().length;return questionGoal();};
+
+  function renderOptions(){
+    const root=document.getElementById("v71OptionsBody"); if(!root||!currentList)return;
+    const n=currentList.pairs.length;
+    const dirs=[['ab',`${currentList.colA||'A'} → ${currentList.colB||'B'}`],['ba',`${currentList.colB||'B'} → ${currentList.colA||'A'}`],['mixed','MIXTE']];
+    const dirBtns=dirs.map(([k,t])=>`<button class="v71-opt-btn ${selectedDirectionChoice===k?'active':''}" data-v71dir="${k}">${escapeHtml(t)}</button>`).join('');
+    const qBtns=qChoices(activePairs().length).map(q=>`<button class="v71-opt-btn ${questionGoal()===q?'active':''}" data-v71q="${q}">${q===activePairs().length?'TOUT':q}</button>`).join('');
+    let portion='';
+    portionDivisions(n).forEach(parts=>{
+      const ranges=balancedRanges(n,parts);
+      portion+=`<div class="v71-portion-line"><span>${parts===1?'FICHE':'EN '+parts+' PARTS'}</span><div>`+ranges.map((r,i)=>`<button class="v71-opt-btn ${selectedPortion.parts===parts&&selectedPortion.part===i?'active':''}" data-v71portion="${parts}:${i}">${parts===1?'TOUT':`${i+1}/${parts}`}<small>${r[0]+1}–${r[1]}</small></button>`).join('')+`</div></div>`;
+    });
+    const cov=v71CoverageInfo();
+    root.innerHTML=`
+      <div class="v71-option-section"><h3>SENS</h3><div class="v71-opt-row">${dirBtns}</div></div>
+      <div class="v71-option-section"><h3>NOMBRE DE QUESTIONS</h3><div class="v71-opt-row">${qBtns}</div><p>Apprentissage, Révision et Word Blast. Extrême va jusqu’à maîtrise totale.</p></div>
+      <div class="v71-option-section"><h3>PARTIE DE LA FICHE</h3>${portion}</div>
+      <div class="v71-option-section"><h3>AUDIO</h3><div class="v71-opt-row"><button class="v71-opt-btn" id="v71MusicToggle">${document.getElementById('musicBtn')?.textContent||'MUSIC'}</button><button class="v71-opt-btn" id="v71SfxToggle">${document.getElementById('sfxBtn')?.textContent||'SFX'}</button><select id="v71TrackSelect"><option value="1">LEVEL IV</option><option value="2">INSURRECTION</option><option value="3">KODEN</option></select></div></div>
+      <div class="v71-option-section"><h3>PROGRESSION</h3><p>${cov.seen}/${cov.total} éléments vus dans la partie active.</p><button class="small" id="v71ResetCoverage">RÉINITIALISER LA PROGRESSION</button></div>`;
+    root.querySelectorAll('[data-v71dir]').forEach(b=>b.onclick=()=>{selectedDirectionChoice=b.dataset.v71dir;renderDirectionChoice();renderOptions();});
+    root.querySelectorAll('[data-v71q]').forEach(b=>b.onclick=()=>{localStorage.setItem("wb_v71_qgoal_"+keyId(),b.dataset.v71q);renderOptions();renderModeContext();});
+    root.querySelectorAll('[data-v71portion]').forEach(b=>b.onclick=()=>{const [p,i]=b.dataset.v71portion.split(':').map(Number);setPortionV71(p,i);});
+    const tr=document.getElementById('musicSelect'), vr=document.getElementById('v71TrackSelect'); if(tr&&vr){vr.value=tr.value;vr.onchange=()=>{tr.value=vr.value;tr.dispatchEvent(new Event('change',{bubbles:true}))};}
+    document.getElementById('v71MusicToggle').onclick=()=>{document.getElementById('musicBtn')?.click();setTimeout(renderOptions,0)};
+    document.getElementById('v71SfxToggle').onclick=()=>{document.getElementById('sfxBtn')?.click();setTimeout(renderOptions,0)};
+    document.getElementById('v71ResetCoverage').onclick=()=>{
+      if(!currentList)return;
+      if(!confirm("RÉINITIALISER LA PROGRESSION ?\n\nLa couverture, les points faibles, la maîtrise Révision et la progression Extrême de cette liste seront remis à zéro.\nLes éléments seront de nouveau considérés comme non travaillés."))return;
+      const c=loadCoverage();
+      saveCoverage({seen:[],cycle:(c.cycle||1)+1});
+      localStorage.removeItem(masteryKey());
+      localStorage.removeItem(weakKey());
+      localStorage.removeItem(extremeKey());
+      updateCoverageDisplays();
+      renderOptions();
+      renderV71Mastery();
+    };
+  }
+
+  openPortionScreen=function(){setPortionV71(1,0);show("modeScreen");};
+  chooseList=function(l){currentList=JSON.parse(JSON.stringify(l));document.getElementById("chosenListTitle").textContent=l.name;selectedPortion={parts:1,part:0,indices:Array.from({length:l.pairs.length},(_,i)=>i),start:0,end:l.pairs.length};renderModeContext();renderV71Mastery();show("modeScreen");};
+
+  const oldRenderModeContext=renderModeContext;
+  renderModeContext=function(){
+    oldRenderModeContext();
+    // V72 — les réglages de taille/découpage restent uniquement dans OPTIONS.
+    // Le moteur historique recréait encore les boutons 10/20/30/LISTE COMPLÈTE
+    // sur les cartes du choix de jeu : on les retire systématiquement ici.
+    document.querySelectorAll('#modeScreen .question-count-row').forEach(e=>e.remove());
+    const cov=v71CoverageInfo();
+    const note=document.getElementById('coverageModeNote');
+    if(note)note.textContent=`COUVERTURE DE LA PARTIE : ${cov.seen} / ${cov.total}`;
+    renderV71Mastery();
+  };
+
+  function showOptions(){renderOptions();document.getElementById('v71Options').classList.add('active');}
+  function hideOptions(){document.getElementById('v71Options').classList.remove('active');renderModeContext();}
+
+  function difficultyChoices(mode){return mode==='wordblast'?[['easy','FACILE'],['medium','MOYEN'],['hard','DIFFICILE']]:[[0,'NO STRESS'],[10,'FACILE · 10s'],[6,'MOYEN · 6s'],[4,'DIFFICILE · 4s']];}
+  function askDifficulty(mode){
+    V71.pendingMode=mode;
+    const box=document.getElementById('v71Difficulty'), body=document.getElementById('v71DifficultyChoices');
+    document.getElementById('v71DifficultyTitle').textContent=(mode==='learn'?'APPRENTISSAGE':mode==='review'?'RÉVISION':mode==='wordblast'?'WORD BLAST':'EXTRÊME')+' — DIFFICULTÉ';
+    body.classList.toggle('v74-three',mode==='wordblast');
+    body.innerHTML=difficultyChoices(mode).map(([v,t])=>`<button class="neon-btn ${String(v)===(mode==='wordblast'?wordBlastDifficulty:String(mode==='learn'?learningSeconds:mode==='review'?revisionSeconds:extremeSeconds))?'hot':''}" data-v71diff="${v}">${t}</button>`).join('');
+    body.querySelectorAll('[data-v71diff]').forEach(b=>b.onclick=()=>{
+      const v=b.dataset.v71diff;
+      box.classList.remove('active');
+      if(mode==='wordblast'){wordBlastDifficulty=v;startGame('review');return;}
+      const sec=Number(v);if(mode==='learn')learningSeconds=sec;else if(mode==='review')revisionSeconds=sec;else extremeSeconds=sec;
+      if(mode==='extreme')startExtremeV71();else startStudy(mode);
+    });
+    box.classList.add('active');
+  }
+
+  function spacedStudyOrder(kind,goal){
+    const pool=activePairs(), keys=activeKeys();
+    const weak=weakData();
+    const pendingWeak=pool.some(p=>weak[pKey(p)]?.level);
+    if(v71CoverageInfo().complete && !pendingWeak) beginCoverageCycleIfComplete();
+    const c=loadCoverage();
+    const seen=new Set((c.seen||[]).filter(k=>keys.has(k)));
+    const weakPairs=shuffledCopy(pool.filter(p=>weak[pKey(p)]?.level));
+    const unseen=shuffledCopy(pool.filter(p=>!seen.has(pKey(p))&&!weak[pKey(p)]?.level));
+    const rest=shuffledCopy(pool.filter(p=>seen.has(pKey(p))&&!weak[pKey(p)]?.level));
+    if(goal>=pool.length)return shuffledCopy(pool);
+    const maxWeak=Math.min(weakPairs.length,Math.max(1,Math.floor(goal*.3)));
+    const selected=weakPairs.slice(0,maxWeak);
+    for(const p of unseen){if(selected.length>=goal)break;if(!selected.includes(p))selected.push(p)}
+    for(const p of rest){if(selected.length>=goal)break;if(!selected.includes(p))selected.push(p)}
+    for(const p of weakPairs.slice(maxWeak)){if(selected.length>=goal)break;if(!selected.includes(p))selected.push(p)}
+    return shuffledCopy(selected);
+  }
+
+  const oldStartStudy=startStudy;
+  startStudy=function(kind){
+    if(kind==='extreme')return startExtremeV71();
+    const direction=directionForQuestion(), selectedSeconds=kind==='learn'?learningSeconds:revisionSeconds;
+    const basePool=activePairs(), goal=Math.min(sessionGoal(kind),basePool.length), order=spacedStudyOrder(kind,goal);
+    study={kind,direction,n:0,goal,pool:basePool,recent:[],target:null,locked:false,qcmSeconds:selectedSeconds,qcmAccel:false,qcmCurrent:selectedSeconds,qcmTimer:null,qcmStarted:0,sessionWeak:new Map(),sessionOrder:order,sessionIndex:0,sessionPresented:new Set(),reinforcement:false};
+    document.getElementById('studyTitle').textContent=kind==='learn'?'APPRENTISSAGE — QCM':'RÉVISION — RÉPONSE ÉCRITE';
+    document.getElementById('studyDirection').textContent=selectedDirectionChoice==='mixed'?'MIXTE':direction==='ab'?`${currentList.colA||'A'} → ${currentList.colB||'B'}`:`${currentList.colB||'B'} → ${currentList.colA||'A'}`;
+    document.getElementById('studyScreen').classList.add('active');document.getElementById('extremeCheckpoint').classList.add('hidden');document.getElementById('extremeCheckpoint').innerHTML='';
+    document.getElementById('v71ExtremeGauge')?.classList.add('hidden');
+    updateMasteryUI();refreshQcmTimerButtons();nextStudyQuestion();
+  };
+
+  function applyStudyResult(p,ok,kind){
+    const k=pKey(p), weak=weakData(), master=masteryData();
+    const w=weak[k]||{level:0,recovery:0};
+    const m=master[k]||{reviewAttempts:0,reviewValid:0,extremeConfirmed:false};
+    const wasLevel=w.level||0;
+    if(kind==='review')m.reviewAttempts=(m.reviewAttempts||0)+1;
+    if(ok){
+      if(w.level){w.recovery=(w.recovery||0)+1;if(w.recovery>=2){w.level=0;w.recovery=0;}}
+      if(kind==='review' && !w.level)m.reviewValid=Math.min(3,(m.reviewValid||0)+1);
+    }else{
+      w.level=wasLevel?2:1;w.recovery=0;
+      m.reviewValid=0; m.extremeConfirmed=false;
+    }
+    if(!w.level)delete weak[k];else weak[k]=w;
+    master[k]=m;saveWeak(weak);saveMastery(master);renderV71Mastery();
+    return {wasLevel,newLevel:w.level||0};
+  }
+
+  const oldAnswerStudy=answerStudy;
+  answerStudy=function(value){
+    if(!study||study.locked)return;
+    if(study.kind==='extreme')return answerExtremeV71(value);
+    study.locked=true;stopQcmTimer();
+    const ok=(study.target.validAnswers||[study.target.answer]).some(a=>normalizeAnswer(value)===normalizeAnswer(a));
+    const responseMs=Math.max(0,performance.now()-(study.qStart||performance.now()));
+    recordAttempt(study.target.pair,ok,study.kind==='learn'?'qcm':'written',responseMs);
+    const state=applyStudyResult(study.target.pair,ok,study.kind);
+    if(!ok)study.sessionWeak.set(pairKey(study.target.pair),{pair:study.target.pair,reason:'error'});
+    if(study.qcmSeconds>0)study.qcmCurrent=study.qcmSeconds;
+    const feedback=document.getElementById('studyFeedback');
+    if(ok){feedback.textContent='✓ CORRECT';feedback.style.color='#72ff9d';feedback.classList.remove('answer-reveal');}
+    else if(state.wasLevel>=1){feedback.textContent=study.target.answer;feedback.style.color='#72ff9d';feedback.classList.add('answer-reveal');}
+    else{feedback.textContent=study.target.answer;feedback.style.color='#ff4d67';feedback.classList.add('answer-reveal');}
+    setTimeout(nextStudyQuestion,ok?550:(state.wasLevel>=1?2400:1050));
+  };
+
+  const oldTimeout=timeoutStudyAnswer;
+  timeoutStudyAnswer=function(){
+    if(!study||study.locked)return;
+    if(study.kind==='extreme')return extremeTimeoutV71();
+    study.locked=true;stopQcmTimer();
+    const source=study.kind==='learn'?'qcm-timeout':'written-timeout';
+    recordAttempt(study.target.pair,false,source,(study.qcmCurrent||study.qcmSeconds||6)*1000);
+    const state=applyStudyResult(study.target.pair,false,study.kind);
+    study.sessionWeak.set(pairKey(study.target.pair),{pair:study.target.pair,reason:'timeout'});
+    const f=document.getElementById('studyFeedback');f.textContent=study.target.answer;f.style.color=state.wasLevel>=1?'#72ff9d':'#ff4d67';f.classList.add('answer-reveal');
+    setTimeout(nextStudyQuestion,state.wasLevel>=1?2400:1050);
+  };
+
+  finishStudy=function(){
+    stopQcmTimer();if(!study)return;study.locked=true;
+    const weak=[...study.sessionWeak.values()], kind=study.kind, cov=v71CoverageInfo();
+    const wdata=weakData();
+    const persistentWeakPairs=activePairs().filter(p=>wdata[pKey(p)]?.level);
+    const persistentWeak=persistentWeakPairs.length;
+    document.getElementById('studyQuestion').textContent=weak.length?'SESSION TERMINÉE':'SESSION PARFAITE';
+    document.getElementById('studyProgress').textContent=`${study.goal} question(s) · ${weak.length} erreur(s) · couverture ${cov.seen}/${cov.total}`;
+    document.getElementById('qcmArea').innerHTML='';document.getElementById('qcmArea').classList.add('hidden');document.getElementById('writtenArea').classList.add('hidden');document.getElementById('qcmTimerControls').classList.add('hidden');document.getElementById('qcmTimeTrack').classList.add('hidden');document.getElementById('studyFeedback').textContent='';
+    const box=document.getElementById('extremeCheckpoint');box.classList.remove('hidden');
+    const left=Math.max(0,cov.total-cov.seen);
+    const weakList=persistentWeakPairs.length
+      ? `<div class="v74-weak-wrap"><div class="v74-weak-title">À REVOIR</div><div class="v74-weak-list">${persistentWeakPairs.map(p=>`<div>${escapeHtml(`${sideValues(p,'a').join(' ; ')||p.a} ↔ ${sideValues(p,'b').join(' ; ')||p.b}`)}</div>`).join('')}</div></div>`
+      : '';
+    box.innerHTML=`<div class="v71-session-summary">${cov.complete?'<strong>TOUTE LA PARTIE A ÉTÉ PARCOURUE</strong>':`<strong>RÉVISION PARTIELLE</strong><br>Il reste ${left} élément(s) à tester.`}${persistentWeak?`<br><span>${persistentWeak} élément(s) restent à consolider et reviendront dans les questionnaires suivants.</span>`:''}</div>${weakList}<div class="extreme-actions"><button class="neon-btn hot" id="sessionContinue">${cov.complete&&!persistentWeak?'REJOUER':'CONTINUER'}</button><button class="small" id="sessionLeave">QUITTER</button></div>`;
+    document.getElementById('sessionContinue').onclick=()=>startStudy(kind);
+    document.getElementById('sessionLeave').onclick=()=>confirmCoverageQuit(()=>{stopQcmTimer();document.getElementById('studyScreen').classList.remove('active');study=null;updateMasteryUI();returnToModeChoice()});
+  };
+
+  confirmCoverageQuit=function(action){
+    const info=v71CoverageInfo();
+    if(info.complete){action();return;}
+    const left=info.total-info.seen;
+    let overlay=document.getElementById('v74CoverageQuit');
+    if(!overlay){
+      document.body.insertAdjacentHTML('beforeend',`<div id="v74CoverageQuit" class="v71-overlay"><div class="v71-dialog v74-quit-dialog"><h2>TA RÉVISION N'EST PAS TERMINÉE</h2><div class="v74-quit-copy" id="v74CoverageQuitCopy"></div><div class="v74-quit-actions"><button class="neon-btn hot" id="v74CoverageStay">CONTINUER À RÉVISER</button><button class="neon-btn" id="v74CoverageLeave">QUITTER QUAND MÊME</button></div></div></div>`);
+      overlay=document.getElementById('v74CoverageQuit');
+    }
+    document.getElementById('v74CoverageQuitCopy').innerHTML=`Tu as testé <strong>${info.seen} / ${info.total}</strong> éléments.<br><strong>${left}</strong> élément(s) n'ont pas encore été testés.`;
+    const close=()=>overlay.classList.remove('active');
+    document.getElementById('v74CoverageStay').onclick=close;
+    document.getElementById('v74CoverageLeave').onclick=()=>{close();action();};
+    overlay.classList.add('active');
+  };
+
+  function extremeScopeId(){return `${selectedPortion.parts}:${selectedPortion.part}:${activePairs().map(pKey).join('|')}`;}
+  function loadExtreme(){const x=loadJSON(extremeKey(),null);return x&&x.scope===extremeScopeId()?x:null;}
+  function saveExtreme(){if(!study||study.kind!=='extreme')return;const levels={};study.extremeLevels.forEach((v,k)=>levels[k]=v);saveJSON(extremeKey(),{scope:extremeScopeId(),levels,validated:[...study.extremeValidated],recent:[...study.extremeRecent].slice(-8)});}
+  function clearExtreme(){localStorage.removeItem(extremeKey());}
+  function extremePairFromKey(k){return activePairs().find(p=>pKey(p)===k)||null;}
+  function startExtremeV71(){
+    let saved=loadExtreme(), useSaved=false;
+    if(saved)useSaved=confirm('UNE PARTIE EXTRÊME EST EN COURS.\n\nOK = REPRENDRE\nANNULER = RECOMMENCER');
+    if(!useSaved){clearExtreme();saved=null;}
+    const pairs=activePairs(), direction=directionForQuestion();
+    const levels=new Map(), validated=new Set();
+    pairs.forEach(p=>levels.set(pKey(p),0));
+    if(saved){Object.entries(saved.levels||{}).forEach(([k,v])=>{if(levels.has(k))levels.set(k,Math.max(-2,Math.min(3,Number(v)||0)))});(saved.validated||[]).forEach(k=>{if(levels.has(k)){levels.set(k,3);validated.add(k)}});}
+    study={kind:'extreme',direction,n:0,goal:null,pool:pairs,target:null,locked:false,qcmSeconds:extremeSeconds,qcmCurrent:extremeSeconds,qcmTimer:null,qcmStarted:0,sessionWeak:new Map(),sessionPresented:new Set(),extremeLevels:levels,extremeValidated:validated,extremeRecent:saved?.recent||[],extremeBufferNext:false,extremeIsBuffer:false};
+    document.getElementById('studyTitle').textContent='EXTRÊME — MAÎTRISE';document.getElementById('studyDirection').textContent=selectedDirectionChoice==='mixed'?'MIXTE':direction==='ab'?`${currentList.colA||'A'} → ${currentList.colB||'B'}`:`${currentList.colB||'B'} → ${currentList.colA||'A'}`;
+    document.getElementById('studyScreen').classList.add('active');document.getElementById('extremeCheckpoint').classList.add('hidden');document.getElementById('extremeCheckpoint').innerHTML='';document.getElementById('v71ExtremeGauge')?.classList.remove('hidden');
+    nextExtremeV71();
+  }
+
+  function extremeActiveKeys(){return [...study.extremeLevels.entries()].filter(([k,v])=>v<3&&!study.extremeValidated.has(k)).map(([k])=>k);}
+  function pickExtremePair(){
+    const active=extremeActiveKeys(); if(!active.length)return null;
+    const validated=[...study.extremeValidated].filter(k=>extremePairFromKey(k));
+    if(active.length<=6 && study.extremeBufferNext && validated.length){
+      study.extremeBufferNext=false;study.extremeIsBuffer=true;
+      const candidates=validated.filter(k=>!study.extremeRecent.slice(-3).includes(k));const k=chooseOne(candidates,candidates[0])||validated[Math.floor(Math.random()*validated.length)];return extremePairFromKey(k);
+    }
+    study.extremeIsBuffer=false;
+    const recent=new Set(study.extremeRecent.slice(-Math.min(5,Math.max(2,active.length-1))));
+    let candidates=active.filter(k=>!recent.has(k));if(!candidates.length)candidates=active;
+    candidates.sort((a,b)=>(study.extremeLevels.get(a)||0)-(study.extremeLevels.get(b)||0));
+    const bottom=(study.extremeLevels.get(candidates[0])||0);const focus=candidates.filter(k=>(study.extremeLevels.get(k)||0)<=bottom+1);
+    const k=focus[Math.floor(Math.random()*focus.length)];return extremePairFromKey(k);
+  }
+
+  function renderExtremeGauge(p){
+    const root=document.getElementById('v71ExtremeGauge');if(!root)return;
+    const k=pKey(p), level=study.extremeIsBuffer?3:(study.extremeLevels.get(k)||0);
+    const vals=[3,2,1,0,-1,-2];
+    root.innerHTML=`<div class="v71-gauge-label">${study.extremeIsBuffer?'ENTRETIEN':'PROGRESSION DU MOT'}</div><div class="v71-tower">${vals.map(v=>`<i class="${v>0?'up':v<0?'down':'neutral'} ${level>=v&&v>0?'lit':''} ${level<=v&&v<0?'lit':''} ${level===v?'current':''}"></i>`).join('')}</div>`;
+  }
+
+  function nextExtremeV71(){
+    if(!study||study.kind!=='extreme')return;
+    const active=extremeActiveKeys();if(!active.length)return finishExtremeV71();
+    const p=pickExtremePair();if(!p)return finishExtremeV71();
+    study.n++;study.locked=false;study.qStart=performance.now();study.target=studyTarget(p);study.extremeRecent=(study.extremeRecent||[]).concat(pKey(p)).slice(-10);if(selectedDirectionChoice==='mixed')study.direction=directionForQuestion();
+    markCoverageSeen(p);study.sessionPresented.add(pKey(p));
+    const remaining=active.length;document.getElementById('studyProgress').textContent=study.extremeIsBuffer?`ENTRETIEN · ${remaining} élément(s) actifs`:`${remaining} élément(s) actifs · niveau ${study.extremeLevels.get(pKey(p))||0}/3`;
+    document.getElementById('studyQuestion').textContent=study.target.prompt;document.getElementById('studyFeedback').textContent='';document.getElementById('studyFeedback').classList.remove('answer-reveal');document.getElementById('extremeCheckpoint').classList.add('hidden');
+    document.getElementById('qcmArea').classList.add('hidden');document.getElementById('writtenArea').classList.remove('hidden');document.getElementById('studyInput').value='';setTimeout(()=>document.getElementById('studyInput').focus(),30);
+    const timed=study.qcmSeconds>0;document.getElementById('qcmTimerControls').classList.toggle('hidden',!timed);document.getElementById('qcmTimeTrack').classList.toggle('hidden',!timed);stopQcmTimer();renderExtremeGauge(p);if(timed)startQcmTimer();saveExtreme();
+  }
+
+  function answerExtremeV71(value){
+    if(!study||study.locked)return;study.locked=true;stopQcmTimer();
+    const ok=(study.target.validAnswers||[study.target.answer]).some(a=>normalizeAnswer(value)===normalizeAnswer(a));
+    const p=study.target.pair,k=pKey(p), f=document.getElementById('studyFeedback');
+    recordAttempt(p,ok,'extreme-written',Math.max(0,performance.now()-(study.qStart||performance.now())));
+    if(study.extremeIsBuffer){f.textContent=ok?'✓ ENTRETIEN':'✕ '+study.target.answer;f.style.color=ok?'#72ff9d':'#ff607d';setTimeout(nextExtremeV71,ok?450:900);return;}
+    let level=study.extremeLevels.get(k)||0;
+    if(ok)level=Math.min(3,level+1);else level=Math.max(-2,level-1);
+    study.extremeLevels.set(k,level);
+    if(!ok && level<=-2){f.textContent=study.target.answer;f.style.color='#72ff9d';f.classList.add('answer-reveal');}
+    else{f.textContent=ok?'✓ CORRECT':'✕ '+study.target.answer;f.style.color=ok?'#72ff9d':'#ff607d';}
+    renderExtremeGauge(p);saveExtreme();
+    if(level>=3){study.extremeValidated.add(k);saveExtreme();validateExtremeVisual(()=>{if(extremeActiveKeys().length<=6 && study.extremeValidated.size)study.extremeBufferNext=true;nextExtremeV71();});}
+    else{if(extremeActiveKeys().length<=6 && study.extremeValidated.size)study.extremeBufferNext=true;setTimeout(nextExtremeV71,!ok&&level<=-2?2400:ok?550:1050);}
+  }
+
+  function extremeTimeoutV71(){if(!study||study.locked)return;answerExtremeV71('__V71_TIMEOUT_IMPOSSIBLE__');}
+  function validateExtremeVisual(done){
+    const gauge=document.getElementById('v71ExtremeGauge'), flash=document.getElementById('v71ValidatedFlash'), question=document.getElementById('studyQuestion');
+    gauge?.classList.add('explode');question?.classList.add('v71-validating');if(flash){flash.textContent='VALIDÉ';flash.classList.add('show')}
+    setTimeout(()=>{gauge?.classList.remove('explode');question?.classList.remove('v71-validating');flash?.classList.remove('show');done();},750);
+  }
+
+  function finishExtremeV71(){
+    stopQcmTimer();study.locked=true;clearExtreme();
+    // V77 — une MAÎTRISE TOTALE Extrême confirme réellement les éléments concernés.
+    // Toute ancienne faiblesse sur ce périmètre doit donc être levée avant de
+    // recalculer la jauge générale, sinon un élément pouvait rester violet.
+    const m=masteryData(), w=weakData();
+    activePairs().forEach(p=>{
+      const k=pKey(p),r=m[k]||{};
+      r.extremeConfirmed=true;
+      r.reviewValid=Math.max(3,r.reviewValid||0);
+      m[k]=r;
+      delete w[k];
+    });
+    saveMastery(m);saveWeak(w);renderV71Mastery();
+    document.getElementById('studyTitle').textContent='EXTRÊME — MAÎTRISE TOTALE';document.getElementById('studyProgress').textContent=`${activePairs().length} élément(s) validé(s)`;document.getElementById('studyQuestion').textContent='MAÎTRISE TOTALE';document.getElementById('writtenArea').classList.add('hidden');document.getElementById('qcmTimerControls').classList.add('hidden');document.getElementById('qcmTimeTrack').classList.add('hidden');document.getElementById('v71ExtremeGauge')?.classList.add('hidden');document.getElementById('studyFeedback').textContent='MAÎTRISE CONFIRMÉE PAR LE MODE EXTRÊME';document.getElementById('studyFeedback').style.color='#39f3ff';
+    const box=document.getElementById('extremeCheckpoint');box.classList.remove('hidden');box.innerHTML=`<div class="extreme-perfect">TOUS LES ÉLÉMENTS ONT ATTEINT LE SOMMET</div><div class="extreme-actions"><button class="neon-btn" id="extremeAgainV71">RECOMMENCER</button><button class="small" id="extremeDoneV71">MENU</button></div>`;
+    document.getElementById('extremeAgainV71').onclick=()=>{clearExtreme();startExtremeV71()};document.getElementById('extremeDoneV71').onclick=()=>{document.getElementById('studyScreen').classList.remove('active');study=null;returnToModeChoice()};
+  }
+
+  // install UI after the original page has created its controls
+  function install(){
+    document.querySelectorAll('.study-difficulty,.wb-difficulty,.direction-choice-panel').forEach(e=>e.classList.add('v71-hidden-legacy'));
+    const profile=document.getElementById('listProfileSummary');if(profile)profile.style.display='none';
+    const modePanel=document.querySelector('#modeScreen .panel');
+    if(modePanel && !document.getElementById('v71MasteryBox')){
+      const bar=document.createElement('div');bar.id='v71MasteryBox';bar.className='v71-mastery-box';modePanel.querySelector('.modes').insertAdjacentElement('beforebegin',bar);
+      const opts=document.createElement('button');opts.id='v71OptionsBtn';opts.className='neon-btn v71-options-btn';opts.textContent='OPTIONS';bar.insertAdjacentElement('afterend',opts);opts.onclick=showOptions;
+    }
+    if(!document.getElementById('v71Options'))document.body.insertAdjacentHTML('beforeend',`<div id="v71Options" class="v71-overlay"><div class="v71-dialog"><div class="v71-dialog-top"><h2>OPTIONS</h2><button class="small" id="v71OptionsClose">FERMER</button></div><div id="v71OptionsBody"></div></div></div>`);
+    if(!document.getElementById('v71Difficulty'))document.body.insertAdjacentHTML('beforeend',`<div id="v71Difficulty" class="v71-overlay"><div class="v71-dialog v71-diff-dialog"><h2 id="v71DifficultyTitle">DIFFICULTÉ</h2><div id="v71DifficultyChoices" class="v71-diff-grid"></div><button class="small" id="v71DifficultyCancel">ANNULER</button></div></div><div id="v71ValidatedFlash">VALIDÉ</div>`);
+    document.getElementById('v71OptionsClose').onclick=hideOptions;document.getElementById('v71DifficultyCancel').onclick=()=>document.getElementById('v71Difficulty').classList.remove('active');
+    const sp=document.querySelector('.study-panel');if(sp&&!document.getElementById('v71ExtremeGauge')){const g=document.createElement('div');g.id='v71ExtremeGauge';g.className='v71-extreme-gauge hidden';const anchor=document.getElementById('studyProgress');anchor?.insertAdjacentElement('afterend',g);if(!g.parentNode)sp.appendChild(g);}
+    document.querySelectorAll('[data-study]').forEach(b=>b.onclick=()=>askDifficulty(b.dataset.study));
+    const wb=document.querySelector('[data-mode="review"]');if(wb)wb.onclick=()=>askDifficulty('wordblast');
+    document.querySelectorAll('.resetCov').forEach(b=>b.style.display='none');
+    ['victoryWeakBtn','lossWeakBtn'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none'});
+    renderV71Mastery();
+  }
+  install();
+})();
+
 </script>
 </body>
 </html>
